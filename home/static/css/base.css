@@ -13,4 +13,14 @@ nav {
 
 html, body {
     height: 100%;
+    font-family: 'Cairo', sans-serif !important;
+    direction: rtl !important;
+}
+
+a {
+    font-family: 'Cairo', sans-serif !important;
+}
+
+.rtl-style {
+    text-align: right;
 }

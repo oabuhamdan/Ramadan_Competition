@@ -28,6 +28,7 @@ class CustomUser(User):
 
 class PointsType(models.Model):
     name = models.CharField(max_length=64)
+    default_value = models.IntegerField()
 
     def __str__(self):
         return 'name: {}'.format(self.name)

@@ -1,23 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html tml dir="rtl" lang="ar">
 <head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block custom_head %}{% endblock %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            crossorigin="anonymous"></script>
     <title>
         {% block title %}
-            Home Competition Website
+            موقع المسابقة المنزلية
         {% endblock %}
     </title>
 </head>
 <body class="main h-100">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Home Competition</a>
+    <a class="navbar-brand" href="/">المسابقة المنزلية</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
             aria-controls="navbarColor03" aria-expanded="true" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -25,29 +28,32 @@
 
     <div class="navbar-collapse collapse show" id="navbarColor03">
         {% if user.is_authenticated %}
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-            </li>
-            <li class="nav-item {{ data.details.active }}">
-                <a class="nav-link" href="/details">Details</a>
-            </li>
-            <li class="nav-item {{ data.score.active }}">
-                <a class="nav-link" href="#">Score</a>
-            </li>
-            <li class="nav-item {{ data.about.active }}">
-                <a class="nav-link" href="#">About</a>
-            </li>
-        </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                </li>
+                <li class="nav-item {{ data.details.active }}">
+                    <a class="nav-link" href="/details">تفاصيل نتائج المستخدم</a>
+                </li>
+                <li class="nav-item {{ data.score.active }}">
+                    <a class="nav-link" href="/score">تسجيل بيانات جديدة</a>
+                </li>
+                <li class="nav-item {{ data.about.active }}">
+                    <a class="nav-link" href="/about">حول</a>
+                </li>
+            </ul>
+            <div class="form-inline mr-auto">
+                <a class="btn btn-outline-light my-2 my-sm-0 btn-md " href="/logout">تسجيل الخروج</a>
+            </div>
         {% else %}
-        <div class="form-inline ml-auto">
-            <a class="btn btn-outline-light my-2 my-sm-0 btn-md" href="/login">Login</a>
-            <a class="btn btn-outline-light my-2 my-sm-0 btn-md" style="margin-left: 10px" href="/register">Register</a>
-        </div>
+            <div class="form-inline mr-auto">
+                <a class="btn btn-outline-light my-2 my-sm-0 btn-md " href="/login">تسجيل الدخول</a>
+                <a class="btn btn-outline-light my-2 my-sm-0 btn-md mr-3" href="/register">التسجيل</a>
+            </div>
         {% endif %}
     </div>
 </nav>
 <div id="content" class="container align-items-center">
-    <div class="container col-10">
+    <div class="container col-10 rtl-style">
         <div>
             <h2>{% block page_header %}{% endblock %}</h2>
             <hr>
@@ -60,14 +66,6 @@
         <small style="color: aliceblue">Copyright &copy; Osama AbuHamdan <span id="year"></span></small>
     </div>
 </footer>{% endcomment %}
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        crossorigin="anonymous"></script>
 <script>
     document.getElementById("year").innerHTML = new Date().getFullYear();
 </script>

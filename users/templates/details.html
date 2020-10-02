@@ -6,38 +6,40 @@
 {% load crispy_forms_filters %}
 
 {% block title %}
-    Details Page
+    تفاصيل نتائج المستخدم
 {% endblock %}
 {% load crispy_forms_tags %}
 
 {% block page_header %}
-    {{ data.user.first_name }}'s Details Page
+    صفحة تفاصيل نتائج {{ data.user.first_name }}
 {% endblock %}
 {% block content %}
-    <div id="accordion">
+    <div id="accordion" class="rtl-style">
         {% for date, points in data.points.items %}
             <!-- Accordion card -->
             <div class="card">
                 <!-- Card header -->
                 <div class="card-header" role="tab" id="heading{{ index }}">
-                    <a class="details-collapse" data-toggle="collapse" data-parent="#accordionEx" href="#collapse{{ forloop.counter }}"
+                    <a class="details-collapse" data-toggle="collapse" data-parent="#accordionEx"
+                       href="#collapse{{ forloop.counter }}"
                        aria-expanded="true"
                        aria-controls="collapse{{ forloop.counter }}">
                         <h5 class="mb-0">
-                            For Month {{ date }}<i class="fas fa-angle-down rotate-icon"></i>
+                            نتائج شهر {{ date }} <i class="fas fa-angle-down rotate-icon"></i>
                         </h5>
                     </a>
                 </div>
                 <!-- Card body -->
-                <div id="collapse{{ forloop.counter }}" class="collapse show" role="tabpanel" aria-labelledby="heading{{ forloop.counter }}"
+                <div id="collapse{{ forloop.counter }}" class="collapse show" role="tabpanel"
+                     aria-labelledby="heading{{ forloop.counter }}"
                      data-parent="#accordionEx">
                     <div class="card-body">
                         <table class="table table-hover table-borderless text-center">
                             <thead>
                             <tr>
-                                <th scope="col">Action</th>
-                                <th scope="col">Points</th>
-                                <th scope="col">Record Date</th>
+                                <th scope="col">العمل</th>
+                                <th scope="col">النقاط</th>
+                                <th scope="col">اليوم</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -45,7 +47,7 @@
                                 <tr>
                                     <td>{{ point.type.name }}</td>
                                     <td>{{ point.value }}</td>
-                                    <td>{{ point.record_date }}</td>
+                                    <td>{{ point.record_date|date:"d" }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

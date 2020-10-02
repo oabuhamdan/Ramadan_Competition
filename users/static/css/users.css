@@ -2,3 +2,12 @@
     color: black !important;
     text-decoration: none !important;
 }
+
+.value-text-box {
+    width: 40% !important;
+}
+
+.date-picker {
+    border-width: 0;
+    text-align: center;
+}
