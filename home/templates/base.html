@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block custom_head %}{% endblock %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="static/css/base.css">
 
     <title>
         {% block title %}
@@ -13,7 +15,7 @@
         {% endblock %}
     </title>
 </head>
-<body>
+<body class="main h-100">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Home Competition</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
@@ -22,11 +24,12 @@
     </button>
 
     <div class="navbar-collapse collapse show" id="navbarColor03">
+        {% if user.is_authenticated %}
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
             </li>
             <li class="nav-item {{ data.details.active }}">
-                <a class="nav-link" href="#">Details</a>
+                <a class="nav-link" href="/details">Details</a>
             </li>
             <li class="nav-item {{ data.score.active }}">
                 <a class="nav-link" href="#">Score</a>
@@ -35,36 +38,35 @@
                 <a class="nav-link" href="#">About</a>
             </li>
         </ul>
-        <form class="form-inline">
-            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Login</button>
-            <button class="btn btn-outline-light my-2 my-sm-0" type="submit" style="margin-left: 10px">Register
-            </button>
-        </form>
+        {% else %}
+        <div class="form-inline ml-auto">
+            <a class="btn btn-outline-light my-2 my-sm-0 btn-md" href="/login">Login</a>
+            <a class="btn btn-outline-light my-2 my-sm-0 btn-md" style="margin-left: 10px" href="/register">Register</a>
+        </div>
+        {% endif %}
     </div>
 </nav>
-<div id="content" class="main">
-    <div class="row">
-        <div class="col-8">
-            {% block content %}
-                <p></p>
-            {% endblock %}
+<div id="content" class="container align-items-center">
+    <div class="container col-10">
+        <div>
+            <h2>{% block page_header %}{% endblock %}</h2>
+            <hr>
         </div>
+        {% block content %}{% endblock %}
     </div>
 </div>
-<footer id="sticky-footer" class="fixed-bottom py-4 bg-dark text-white-50">
-    <div class="container text-center">
+{% comment %}<footer id="sticky-footer" class="sticky-bottom py-4 bg-dark text-white-50">
+    <div class="container text-center" style="height: 100%">
         <small style="color: aliceblue">Copyright &copy; Osama AbuHamdan <span id="year"></span></small>
     </div>
-</footer>
+</footer>{% endcomment %}
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script>
     document.getElementById("year").innerHTML = new Date().getFullYear();

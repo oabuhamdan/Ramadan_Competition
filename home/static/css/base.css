@@ -1,0 +1,16 @@
+.sticky-bottom {
+    position: sticky;
+    height: 40px;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px;
+}
+
+nav {
+    margin-bottom: 10px;
+}
+
+
+html, body {
+    height: 100%;
+}

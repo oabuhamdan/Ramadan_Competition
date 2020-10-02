@@ -1,7 +1,6 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+
 from .forms import *
-from users.models import *
 
 
 # Create your views here.
@@ -13,16 +12,13 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            data = form.cleaned_data
-            user = User(name=data['name'], username=data['username'], password=data['password'])
-            user.save()
-            return HttpResponseRedirect('/login')
+            form.save()
+            return redirect('/login')
         else:
-            form.add_error('', 'Token hasn\'t been verified, please try again')
-            return render(request, 'registrationPage.html', {'form': form})
+            return render(request, 'registration/register.html', {'form': form})
     else:
         form = RegisterForm()
-        return render(request, 'registrationPage.html', {'form': form})
+        return render(request, 'registration/register.html', {'form': form})
 
 
 def login(request):

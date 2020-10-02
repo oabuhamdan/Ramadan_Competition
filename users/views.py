@@ -1,9 +1,17 @@
-from django.db.models import ObjectDoesNotExist
+from django.contrib import messages
+from django.contrib.auth import user_logged_in
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-from .models import *
+from django.shortcuts import render
+
+from .models import CustomUser
 
 
-# Create your views here.
-def show_user_page(request, username):
-    user = get_object_or_404(User, username=username)
+def details(request):
+    if request.user.is_authenticated:
+        user = request.user
+        points = CustomUser.get_points(user)
+        data = {'points': points, 'user': user}
+        return render(request, "details.html", {'data': data})
+    else:
+        return HttpResponse('Unauthorized', status=401)
+    # user = get_object_or_404(CustomUser)
