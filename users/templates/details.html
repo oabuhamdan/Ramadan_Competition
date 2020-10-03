@@ -11,7 +11,12 @@
 {% load crispy_forms_tags %}
 
 {% block page_header %}
-    صفحة تفاصيل نتائج {{ data.user.first_name }}
+    <div>
+        <h2>
+            صفحة تفاصيل نتائج {{ data.user.first_name }}
+        </h2>
+        <hr>
+    </div>
 {% endblock %}
 {% block content %}
     <div id="accordion" class="rtl-style">
@@ -39,14 +44,16 @@
                             <tr>
                                 <th scope="col">العمل</th>
                                 <th scope="col">النقاط</th>
+                                <th scope="col">تفاصيل</th>
                                 <th scope="col">اليوم</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for point in points %}
                                 <tr>
-                                    <td>{{ point.type.name }}</td>
+                                    <td>{{ point.type.label }}</td>
                                     <td>{{ point.value }}</td>
+                                    <td>{{ point.details }}</td>
                                     <td>{{ point.record_date|date:"d" }}</td>
                                 </tr>
                             {% endfor %}
@@ -60,3 +67,22 @@
         {% endfor %}
     </div>
 {% endblock %}
+{% comment %}
+
+
+
+
+
+{% if type.form_type == 'number' %}
+
+                    {% endif %}
+                    {% if point.type.form_type == 'check_box' %}
+                    {% endif %}
+                    {% if point.type.form_type == 'book' %}
+                    {% endif %}
+                    {% if type.form_type == 'quran' %}
+                    {% endif %}
+                    {% if point.type.form_type == 'media' %}
+                    {% endif %}
+                    {% if point.type.form_type == 'other' %}
+                    {% endif %}{% endcomment %}

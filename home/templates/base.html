@@ -53,11 +53,8 @@
     </div>
 </nav>
 <div id="content" class="container align-items-center">
-    <div class="container col-10 rtl-style">
-        <div>
-            <h2>{% block page_header %}{% endblock %}</h2>
-            <hr>
-        </div>
+    <div class="container rtl-style">
+        {% block page_header %}{% endblock %}
         {% block content %}{% endblock %}
     </div>
 </div>

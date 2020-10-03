@@ -3,11 +3,65 @@
     text-decoration: none !important;
 }
 
-.value-text-box {
-    width: 40% !important;
-}
-
 .date-picker {
     border-width: 0;
-    text-align: center;
+    text-align: right;
+}
+
+.input-field {
+    margin-bottom: 20px !important;
+}
+
+.input-group > .custom-select:not(:last-child), .input-group > .form-control:not(:last-child) {
+    border-top-right-radius: .3rem !important;
+    border-bottom-right-radius: .3rem !important;
+}
+
+.input-group > .custom-select:not(:first-child), .input-group > .form-control:not(:first-child) {
+    border-top-left-radius: .3rem !important;
+    border-bottom-left-radius: .3rem !important;
+}
+
+.input-group {
+    width: 100%; /* Your element needs a fixed width */
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid lightgray;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.input-group > * {
+    padding-top: 5px;
+    padding-bottom: 5px ;
+
+}
+
+.checkbox_radio-group {
+    margin-top: 10px !important;
+}
+
+.checkbox_radio-group > * {
+    margin-right: 10px;
+}
+
+.input-box {
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.disabled_field {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.less-line-height {
+    line-height: 10px !important;
+}
+
+.hidden{
+    display: none !important;
 }
