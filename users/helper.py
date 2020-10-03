@@ -34,7 +34,7 @@ def get_book_info(items):
     details = ['قراءة']
     points = read_points * page_num
     if 'book-summary' in items:
-        details.append('و تلخيص')
+        details.append('وتلخيص')
         points = points + (summary_points * page_num)
     details.append(str(page_num))
     details.append('صفحات')
