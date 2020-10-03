@@ -24,7 +24,7 @@ SECRET_KEY = '929%gw$722@qlv$9cd=$24#f(soo2za35*g@zl4g@syn=lh&33'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', 'home-competition.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
