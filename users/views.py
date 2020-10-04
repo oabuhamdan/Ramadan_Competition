@@ -15,7 +15,7 @@ def details(request):
 
 
 def save_to_db(request):
-    user = CustomUser.objects.get(username=request.user.username)
+    user = CustomUser.objects.filter(username=request.user.username).first()
     items = request.POST.dict()
     total = 0
     for key, value in items.items():

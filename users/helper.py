@@ -1,3 +1,12 @@
+def pages_wording(page_num):
+    if page_num == 1:
+        return 'صفحة'
+    elif page_num == 2:
+        return 'صفحتين'
+    else:
+        return page_num + ' ' + 'صفحات'
+
+
 def get_quran_info(items):
     page_num = num(items['quran-read-pages'])
     details = []
@@ -10,12 +19,11 @@ def get_quran_info(items):
 
     points = page_num * factor
     if 'quran-tafseer' in items:
-        details.append('مع تفسير')
+        details.append('وتفسير')
         points = points + page_num * num(items['quran-score-tafseer'])
-    details.append(str(page_num))
-    details.append('صفحات')
-    details.append('من سورة')
-    details.append(items['quran-surah'])
+    details.append(pages_wording(page_num))
+    details.append('من جزء')
+    details.append(items['quran-juz'])
     return points, ' '.join(details)
 
 
@@ -36,8 +44,7 @@ def get_book_info(items):
     if 'book-summary' in items:
         details.append('وتلخيص')
         points = points + (summary_points * page_num)
-    details.append(str(page_num))
-    details.append('صفحات')
+    details.append(pages_wording(page_num))
     details.append('من كتاب')
     details.append(items['book-name'])
     return points, ' '.join(details)
@@ -51,6 +58,8 @@ def get_media_info(items):
     if 'media-summary' in items:
         details.append('وتلخيص')
         points = points + summary_points
+    details.append(str(num(duration)))
+    details.append('دقائق من')
     details.append(items['media-name'])
     return points, ' '.join(details)
 
@@ -72,4 +81,7 @@ def num(s):
     try:
         return int(s)
     except ValueError:
-        return float(s)
+        try:
+            return float(s)
+        except:
+            return 0
