@@ -22,7 +22,7 @@ def get_quran_info(items):
         details.append('وتفسير')
         points = points + page_num * num(items['quran-score-tafseer'])
     details.append(pages_wording(page_num))
-    details.append('من جزء')
+    details.append('من الجزء')
     details.append(items['quran-juz'])
     return points, ' '.join(details)
 
@@ -57,7 +57,7 @@ def get_media_info(items):
     duration = num(items['media-duration'])
     points = duration * num(items['media-score-' + items['media-type']])
     details = ['مشاهدة']
-    if 'media-summary' in items:
+    if 'media-summary' in items and duration > 240:
         details.append('وتلخيص')
         points = points + summary_points
     details.append(str(num(duration)))
