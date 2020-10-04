@@ -7,7 +7,7 @@ from users.models import CustomUser
 
 
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=32, label="الاسم الأول")
+    first_name = forms.CharField(max_length=32, label="الاسم الأول (بالعربيّة رجاءً)")
     username = forms.CharField(label='اسم المستخدم')
     password1 = forms.CharField(
         label="كلمة السر",
