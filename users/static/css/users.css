@@ -65,3 +65,7 @@
 .hidden{
     display: none !important;
 }
+
+.total_points{
+    text-align: end;
+}

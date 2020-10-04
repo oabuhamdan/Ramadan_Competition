@@ -7,7 +7,7 @@ from django.utils.timezone import now
 
 # Create your models here.
 class CustomUser(User):
-    total_points = models.IntegerField(default=0)
+    total_points = models.FloatField(default=0.0)
 
     def __str__(self):
         return 'name: {}'.format(self.first_name)

@@ -6,7 +6,7 @@ from .models import CustomUser, PointsType, Point
 
 def details(request):
     if request.user.is_authenticated:
-        user = request.user
+        user = CustomUser.objects.filter(username=request.user.username).first()
         points = CustomUser.get_points(user.username)
         data = {'points': points, 'user': user}
         return render(request, "details.html", {'data': data})
@@ -34,6 +34,7 @@ def save_to_db(request):
                 Point.objects.create(user=user, type=pt_type, value=points, details=pt_details,
                                      record_date=record_date)
     user.total_points = user.total_points + total
+    user.save()
 
 
 def score(request):

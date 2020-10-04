@@ -13,12 +13,13 @@
 {% block page_header %}
     <div>
         <h2>
-            صفحة تفاصيل نتائج المستخدم  {{ data.user.first_name }}
+            صفحة تفاصيل نتائج المستخدم {{ data.user.first_name }}
         </h2>
         <hr>
     </div>
 {% endblock %}
 {% block content %}
+    <div class="total_points rtl-style"> مجموع النقاط: {{ data.user.total_points|floatformat:"-2" }}</div>
     <div id="accordion" class="rtl-style">
         {% for date, points in data.points.items %}
             <!-- Accordion card -->
@@ -61,7 +62,6 @@
                         </table>
                     </div>
                 </div>
-
             </div>
             <!-- Accordion card -->
         {% endfor %}
