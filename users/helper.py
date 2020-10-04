@@ -4,7 +4,7 @@ def pages_wording(page_num):
     elif page_num == 2:
         return 'صفحتين'
     else:
-        return page_num + ' ' + 'صفحات'
+        return str(page_num) + ' ' + 'صفحات'
 
 
 def get_quran_info(items):
@@ -38,12 +38,14 @@ def get_book_info(items):
     summary_points = num(items['book-score-summary'])
     start_page = num(items['book-start-page'])
     finish_page = num(items['book-finish-page'])
-    page_num = finish_page - start_page
+    page_num = finish_page - start_page + 1
     details = ['قراءة']
     points = read_points * page_num
     if 'book-summary' in items:
         details.append('وتلخيص')
         points = points + (summary_points * page_num)
+
+    print('BOOK', points)
     details.append(pages_wording(page_num))
     details.append('من كتاب')
     details.append(items['book-name'])

@@ -52,7 +52,7 @@
                             {% for point in points %}
                                 <tr>
                                     <td>{{ point.type.label }}</td>
-                                    <td>{{ point.value }}</td>
+                                    <td>{{ point.value|floatformat:"-2" }}</td>
                                     <td>{{ point.details }}</td>
                                     <td>{{ point.record_date|date:"d" }}</td>
                                 </tr>

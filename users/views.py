@@ -17,7 +17,7 @@ def details(request):
 def save_to_db(request):
     user = CustomUser.objects.filter(username=request.user.username).first()
     items = request.POST.dict()
-    total = 0
+    total = 0.0
     for key, value in items.items():
         pt = PointsType.objects.filter(form_type=key).first()
         if pt is not None and value == 'on':
