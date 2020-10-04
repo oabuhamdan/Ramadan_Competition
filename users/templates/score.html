@@ -68,9 +68,9 @@
                         </div>
                     {% endif %}
                     {% if type.form_type == 'quran' %}
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-read" value="1">
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-tafseer" value="5">
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-memorize" value="5">
+                        <input type="number" class="hidden" name="{{ type.form_type }}-score-read" value="1.0">
+                        <input type="number" class="hidden" name="{{ type.form_type }}-score-tafseer" value="5.0">
+                        <input type="number" class="hidden" name="{{ type.form_type }}-score-memorize" value="5.0">
                         <div class="input-group">
                             <label class="pt-3">عدد الصفحات المقروءة</label>
                             <div class="d-flex">
@@ -84,7 +84,7 @@
                             </div>
                             <div class="">
                                 <label for="quran-surah">من سورة</label>
-                                <input class="input-box" type="text" name="book-name">
+                                <input class="input-box" type="text" name="quran-surah">
                             </div>
                             <div class="checkbox_radio-group">
                             <span>
@@ -147,7 +147,7 @@
                 field.classList.add('disabled_field');
                 $(field).find(":input:not(:checkbox)").removeAttr('required');
             }
-            $(field).find(":input")
+            $(field).find(":input:not(.hidden)")
                 .val("")
                 .removeAttr("checked")
                 .removeAttr("selected");
