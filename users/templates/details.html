@@ -19,8 +19,9 @@
     </div>
 {% endblock %}
 {% block content %}
-    <div class="total_points rtl-style"> مجموع النقاط: {{ data.user.total_points|floatformat:"-2" }}</div>
+    <div class="total_points rtl-style"> مجموع النقاط الكلي: {{ data.user.total_points|floatformat:"-2" }}</div>
     <div id="accordion" class="rtl-style">
+    {% set x = '5' %}
         {% for date, points in data.points.items %}
             <!-- Accordion card -->
             <div class="card">
