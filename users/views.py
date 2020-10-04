@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .helper import *
@@ -12,7 +11,7 @@ def details(request):
         data = {'points': points, 'user': user}
         return render(request, "details.html", {'data': data})
     else:
-        return HttpResponse('Unauthorized', status=401)
+        return render(request, '401.html', status=401)
 
 
 def save_to_db(request):
@@ -41,4 +40,4 @@ def score(request):
             save_to_db(request)
             return redirect('/details')
     else:
-        return HttpResponse('Unauthorized', status=401)
+        return render(request, '401.html', status=401)

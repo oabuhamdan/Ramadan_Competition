@@ -21,9 +21,5 @@ def register(request):
         return render(request, 'registration/register.html', {'form': form})
 
 
-def login(request):
-    pass
-
-
-def logout(request):
-    pass
+def about(request):
+    return render(request, 'about-me.html')
