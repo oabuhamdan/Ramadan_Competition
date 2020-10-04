@@ -2,7 +2,7 @@ function triggerDisableState(cb) {
     var field = $(cb).parent().siblings().get(0);
     if (field.classList.contains('disabled_field')) {
         field.classList.remove('disabled_field');
-        $(field).find(":input:not(:checkbox)").attr('required', 'true');
+        $(field).find(":input:not(:checkbox):not(.hidden)").attr('required', 'true');
     } else {
         field.classList.add('disabled_field');
         $(field).find(":input:not(:checkbox)").removeAttr('required');
