@@ -52,5 +52,5 @@ class Point(models.Model):
     record_date = models.DateField(default=now)
 
     def __str__(self):
-        return 'user: {}, point type: {}, value: {}, date: {}'.format(self.user.first_name, self.type.form_type, self.value,
+        return 'user: {}, point type: {}, value: {}, date: {}'.format(self.user.username, self.type.form_type, self.value,
                                                                       self.record_date)
