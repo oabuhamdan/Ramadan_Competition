@@ -145,13 +145,9 @@
                 $(field).find(":input:not(:checkbox):not(.hidden)").attr('required', 'true');
             } else {
                 field.classList.add('disabled_field');
-                $(field).find(":input:not(:checkbox)").removeAttr('required');
+                $(field).find(":input").removeAttr('required');
             }
-            $(field).find(":input:not(.hidden):not(:radio)")
-                .val("")
-                .removeAttr("checked")
-                .removeAttr("selected");
-            $('input[name="quran-read-pages"]').val('0')
+
         }
 
         $(document).ready(function () {
