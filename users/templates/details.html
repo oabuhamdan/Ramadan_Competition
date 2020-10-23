@@ -19,7 +19,6 @@
     </div>
 {% endblock %}
 {% block content %}
-    <div class="total_points rtl-style"> مجموع النقاط الكلي: {{ data.user.total_points|floatformat:"-2" }}</div>
     <div id="accordion" class="rtl-style">
         {% for date, points in data.points.items %}
             <!-- Accordion card -->
@@ -30,9 +29,12 @@
                        href="#collapse{{ forloop.counter }}"
                        aria-expanded="true"
                        aria-controls="collapse{{ forloop.counter }}">
-                        <h5 class="mb-0">
+                        <h5 class="mb-0" style="float: right">
                             نتائج شهر {{ date }} <i class="fas fa-angle-down rotate-icon"></i>
                         </h5>
+                        <h6 style="float: left">
+                            المجموع الشهري: {{data.total_monthly|get_item:date |floatformat:"-2"}}
+                        </h6>
                     </a>
                 </div>
                 <!-- Card body -->

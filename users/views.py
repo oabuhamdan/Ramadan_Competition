@@ -1,3 +1,4 @@
+from django.template.defaulttags import register
 from django.shortcuts import render, redirect
 
 from .helper import *
@@ -7,8 +8,8 @@ from .models import CustomUser, PointsType, Point
 def details(request):
     if request.user.is_authenticated:
         user = CustomUser.objects.filter(username=request.user.username).first()
-        points = CustomUser.get_points(user.username)
-        data = {'points': points, 'user': user}
+        points, total_monthly = CustomUser.get_points(user.username)
+        data = {'points': points, 'user': user, 'total_monthly': total_monthly}
         return render(request, "details.html", {'data': data})
     else:
         return render(request, '401.html', status=401)
@@ -43,3 +44,8 @@ def score(request):
             return redirect('/details')
     else:
         return render(request, '401.html', status=401)
+
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

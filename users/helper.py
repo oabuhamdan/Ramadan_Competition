@@ -7,6 +7,13 @@ def pages_wording(page_num):
         return str(page_num) + ' ' + 'صفحات'
 
 
+def media_wording(duration):
+    if 3 <= duration <= 10:
+        return 'دقائق من'
+    else:
+        return 'دقيقة من'
+
+
 def get_quran_info(items):
     page_num = num(items['quran-read-pages'])
     details = []
@@ -61,7 +68,7 @@ def get_media_info(items):
         details.append('وتلخيص')
         points = points + summary_points
     details.append(str(num(duration)))
-    details.append('دقائق من')
+    details.append(media_wording(duration))
     details.append(items['media-name'])
     return points, ' '.join(details)
 

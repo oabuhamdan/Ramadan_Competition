@@ -16,14 +16,16 @@ class CustomUser(User):
     def get_points(username):
         points = Point.objects.filter(user__username=username).order_by('record_date')
         result = {}
+        total_monthly = {}
         for point in points:
             date_string = point.record_date.strftime("%m-%Y")
             if date_string in result:
                 result[date_string].append(point)
+                total_monthly[date_string] = total_monthly[date_string] + point.value
             else:
                 result[date_string] = [point]
-
-        return result
+                total_monthly[date_string] = point.value
+        return result, total_monthly
 
 
 class AllowedPointTypes(models.TextChoices):
