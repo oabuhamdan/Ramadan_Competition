@@ -16,16 +16,16 @@ class CustomUser(User):
     def get_points(username):
         points = Point.objects.filter(user__username=username).order_by('record_date')
         result = {}
-        total_monthly = {}
+        total_daily = {}
         for point in points:
-            date_string = point.record_date.strftime("%m-%Y")
+            date_string = point.record_date.strftime("%d-%m-%Y")
             if date_string in result:
                 result[date_string].append(point)
-                total_monthly[date_string] = total_monthly[date_string] + point.value
+                total_daily[date_string] = total_daily[date_string] + point.value
             else:
                 result[date_string] = [point]
-                total_monthly[date_string] = point.value
-        return result, total_monthly
+                total_daily[date_string] = point.value
+        return result, total_daily
 
 
 class AllowedPointTypes(models.TextChoices):
@@ -37,13 +37,25 @@ class AllowedPointTypes(models.TextChoices):
     Form = 'other', 'Other'
 
 
+class Sections(models.TextChoices):
+    Default = 'default', 'Default'
+    Prayers = 'prayers', 'Prayers'
+    LifeStyle = 'life_style', 'Life Style'
+    Educational = 'educational', 'Educational'
+    Personal = 'personal', 'Personal'
+
+
 class PointsType(models.Model):
-    label = models.CharField(max_length=64, default='', blank=False, null=False)
+    id = models.AutoField(primary_key=True)
+    section = models.CharField(max_length=32, choices=Sections.choices, default=Sections.Default)
+    label = models.CharField(max_length=128, default='', blank=False, null=False)
+    description = models.CharField(max_length=256, default='')
+    score = models.IntegerField(default=0)
     form_type = models.CharField(max_length=32, choices=AllowedPointTypes.choices, default=AllowedPointTypes.Number)
     form_html = models.TextField(default='Default value is populated in the HTML template')
 
     def __str__(self):
-        return 'name: {}'.format(self.form_type)
+        return 'label: {}'.format(self.label)
 
 
 class Point(models.Model):

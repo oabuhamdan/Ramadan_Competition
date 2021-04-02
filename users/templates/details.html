@@ -30,10 +30,10 @@
                        aria-expanded="true"
                        aria-controls="collapse{{ forloop.counter }}">
                         <h5 class="mb-0" style="float: right">
-                            نتائج شهر {{ date }} <i class="fas fa-angle-down rotate-icon"></i>
+                            نتائج يوم {{ date }} <i class="fas fa-angle-down rotate-icon"></i>
                         </h5>
                         <h6 style="float: left">
-                            المجموع الشهري: {{data.total_monthly|get_item:date |floatformat:"-2"}}
+                            المجموع اليومي: {{ data.total_daily|get_item:date |floatformat:"-2" }}
                         </h6>
                     </a>
                 </div>

@@ -1,3 +1,22 @@
+from users.models import CustomUser, PointsType, Point
+
+
+def save_to_db(request):
+    user = CustomUser.objects.filter(username=request.user.username).first()
+    items = request.POST.dict()
+    total = 0.0
+    record_date = items['record-date']
+    for key, value in items.items():
+        if value == 'on':
+            pt_points, pt_object, pt_details = get_points_and_details(key, items)
+            total = total + pt_points
+            Point.objects.create(user=user, type=pt_object, value=pt_points, details=pt_details,
+                                 record_date=record_date)
+
+    user.total_points = user.total_points + total
+    user.save()
+
+
 def pages_wording(page_num):
     if page_num == 1:
         return 'صفحة'
@@ -34,7 +53,7 @@ def get_quran_info(items):
     return points, ' '.join(details)
 
 
-def get_siam_info(items):
+def handle_checkbox_points(items):
     points = num(items['check_box-score'])
     details = ''
     return points, details
@@ -73,17 +92,16 @@ def get_media_info(items):
     return points, ' '.join(details)
 
 
-def get_points_and_details(items, key):
-    for item in items:
-        if item.startswith(key):
-            if key == 'quran':
-                return get_quran_info(items)
-            elif key == 'check_box':
-                return get_siam_info(items)
-            elif key == 'book':
-                return get_book_info(items)
-            elif key == 'media':
-                return get_media_info(items)
+def get_pt_details(pt_points, pt_object):
+    return '{} نقاط من {}'.format(pt_points, pt_object.label)
+
+
+def get_points_and_details(pt_info, items):
+    pt_id = pt_info.split('-')[1]
+    pt_object = PointsType.objects.filter(id=pt_id).first()
+    pt_points = num(items[pt_info + '-score'])
+    pt_details = get_pt_details(pt_points, pt_object)
+    return pt_points, pt_object, pt_details
 
 
 def num(s):
@@ -94,3 +112,12 @@ def num(s):
             return float(s)
         except:
             return 0
+
+
+arabic_section_names = {
+    'default': '',
+    'prayers': 'الجانب العبادي',
+    'life_style': 'الجانب الحياتي',
+    'educational': 'الجانب الثقافي',
+    'personal': 'الجانب الشخصي'
+}

@@ -26,112 +26,121 @@
             <input required="required" class="date-picker" type="date" id="start" name="record-date"
                    min="2020-10-05">
         </div>
-        {% for type in data.points_types %}
-            <div class="input-field" id="{{ type.form_type }}">
-                <div>
-                    <input type="checkbox" name='{{ type.form_type }}' onclick='triggerDisableState(this)'>
-                    <label>{{ type.label }}</label>
-                </div>
-                <div class="less-line-height disabled_field">
-                    <br>
-                    {% if type.form_type == 'number' %}
-                        <button class="btn btn-primary btn-pluss input-group-btn form-control" type="button">+</button>
-                        <input name="{{ type.form_type }}-count" type="text" readonly="readonly"
-                               class="value-text-box form-control no-padding add-color text-center height-30"
-                               value="0"/>
-                        <button class="btn btn-secondary btn-minuse input-group-btn form-control" type="button">-
-                        </button>
-                    {% endif %}
-                    {% if type.form_type == 'check_box' %}
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score" value="10">
-                    {% endif %}
-                    {% if type.form_type == 'book' %}
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-read" value="0.5">
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-summary" value="0.25">
-                        <div class="input-group">
-                            <div class="">
-                                <label for="inputCity">اسم الكتاب</label>
-                                <input class="input-box" type="text" name="book-name">
+        {% regroup data.points_types by section as points_types %}
+        {% for points_type in points_types %}
+            <h4>{{ points_type.grouper|get_arabic_section_name }}</h4>
+            <hr/>
+            {% for type in points_type.list %}
+                <div class="input-field" id="{{ type.form_type }}">
+                    <div>
+                        <input type="checkbox" name='{{ type.form_type }}-{{ type.id }}'
+                               onclick='triggerDisableState(this)'>
+                        <label>{{ type.label }}</label>
+                        <sub style=" font-size: 10px;color: darkgray;"> {{ type.description }} </sub>
+                    </div>
+                    <div class="less-line-height disabled_field d-flex">
+                        <br>
+                        {% if type.form_type == 'number' %}
+                            <button class="btn btn-primary btn-pluss input-group-btn form-control" type="button">+
+                            </button>
+                            <input name="{{ type.form_type }}-{{ type.id }}-score" type="text" readonly="readonly"
+                                   class="value-text-box form-control no-padding add-color text-center height-30"
+                                   value="0"/>
+                            <button class="btn btn-secondary btn-minuse input-group-btn form-control" type="button">-
+                            </button>
+                        {% endif %}
+                        {% if type.form_type == 'check_box' %}
+                            <input type="number" class="hidden" name="{{ type.form_type }}-{{ type.id }}-score"
+                                   value="{{ type.score }}"/>
+                        {% endif %}
+                        {% if type.form_type == 'book' %}
+                            <input type="number" class="hidden" name="{{ type.form_type }}-score-read" value="0.5">
+                            <input type="number" class="hidden" name="{{ type.form_type }}-score-summary" value="0.25">
+                            <div class="input-group">
+                                <div class="">
+                                    <label for="inputCity">اسم الكتاب</label>
+                                    <input class="input-box" type="text" name="book-name">
+                                </div>
+                                <div class="">
+                                    <label for="inputState">من صفحة</label>
+                                    <input class="input-box" type="number" name="book-start-page">
+                                </div>
+                                <div class="">
+                                    <label for="inputState">إلى صفحة</label>
+                                    <input class="input-box" type="number" name="book-finish-page">
+                                </div>
+                                <div class="checkbox_radio-group">
+                                    <input type="checkbox" name="book-summary">
+                                    <label>مع تلخيص</label>
+                                </div>
                             </div>
-                            <div class="">
-                                <label for="inputState">من صفحة</label>
-                                <input class="input-box" type="number" name="book-start-page">
-                            </div>
-                            <div class="">
-                                <label for="inputState">إلى صفحة</label>
-                                <input class="input-box" type="number" name="book-finish-page">
-                            </div>
-                            <div class="checkbox_radio-group">
-                                <input type="checkbox" name="book-summary">
-                                <label>مع تلخيص</label>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if type.form_type == 'quran' %}
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-read" value="1.0">
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-tafseer" value="1.0">
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-memorize" value="5.0">
-                        <div class="input-group">
-                            <label class="pt-3">عدد الصفحات المقروءة</label>
-                            <div class="d-flex">
-                                <button class="btn btn-secondary btn-pluss form-control" type="button">+
-                                </button>
-                                <input name="quran-read-pages" type="number" readonly="readonly"
-                                       class="form-control no-padding add-color text-center height-30"
-                                       value="0"/>
-                                <button class="btn btn-secondary btn-minuse form-control" type="button">-
-                                </button>
-                            </div>
-                            <div class="">
-                                <label for="quran-juz">من جزء</label>
-                                <input class="input-box" type="text" name="quran-juz">
-                            </div>
-                            <div class="checkbox_radio-group">
+                        {% endif %}
+                        {% if type.form_type == 'quran' %}
+                            <input type="number" class="hidden" name="{{ type.form_type }}-score-read" value="1.0">
+                            <input type="number" class="hidden" name="{{ type.form_type }}-score-tafseer" value="1.0">
+                            <input type="number" class="hidden" name="{{ type.form_type }}-score-memorize" value="5.0">
+                            <div class="input-group">
+                                <label class="pt-3">عدد الصفحات المقروءة</label>
+                                <div class="d-flex">
+                                    <button class="btn btn-secondary btn-pluss form-control" type="button">+
+                                    </button>
+                                    <input name="quran-read-pages" type="number" readonly="readonly"
+                                           class="form-control no-padding add-color text-center height-30"
+                                           value="0"/>
+                                    <button class="btn btn-secondary btn-minuse form-control" type="button">-
+                                    </button>
+                                </div>
+                                <div class="">
+                                    <label for="quran-juz">من جزء</label>
+                                    <input class="input-box" type="text" name="quran-juz">
+                                </div>
+                                <div class="checkbox_radio-group">
                             <span>
                                 <input type="checkbox" name="quran-tafseer">
                                 <label>مع تفسير</label>
                             </span>
-                                <span>
+                                    <span>
                                 <input type="checkbox" name="quran-memorize">
                                 <label>حفظاً</label>
                             </span>
+                                </div>
                             </div>
-                        </div>
-                    {% endif %}
-                    {% if type.form_type == 'media' %}
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-single" value="0.05">
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-multi" value="0.065">
-                        <input type="number" class="hidden" name="{{ type.form_type }}-score-summary" value="10">
-                        <div class="input-group">
-                            <div class="">
-                                <label for="">اسم المقطع / السلسلة</label>
-                                <input class="input-box" type="text" value="" name="media-name">
-                            </div>
-                            <div class="">
-                                <label for="">المدة (بالدقائق)</label>
-                                <input class="input-box" type="number" value="" name="media-duration">
-                            </div>
-                            <div class="checkbox_radio-group">
+                        {% endif %}
+                        {% if type.form_type == 'media' %}
+                            <input type="number" class="hidden" name="{{ type.form_type }}-score-single" value="0.05">
+                            <input type="number" class="hidden" name="{{ type.form_type }}-score-multi" value="0.065">
+                            <input type="number" class="hidden" name="{{ type.form_type }}-score-summary" value="10">
+                            <div class="input-group">
+                                <div class="">
+                                    <label for="">اسم المقطع / السلسلة</label>
+                                    <input class="input-box" type="text" value="" name="media-name">
+                                </div>
+                                <div class="">
+                                    <label for="">المدة (بالدقائق)</label>
+                                    <input class="input-box" type="number" value="" name="media-duration">
+                                </div>
+                                <div class="checkbox_radio-group">
                             <span>
                                 <input type="radio" checked="checked" value="single" name="media-type">
                                 <label>مقطع</label>
                             </span>
-                                <span>
+                                    <span>
                                 <input type="radio" value="multi" name="media-type">
                                 <label>سلسلة</label>
                             </span>
+                                </div>
+                                <div class="checkbox_radio-group">
+                                    <input type="checkbox" name="media-summary">
+                                    <label>مع تلخيص</label>
+                                </div>
                             </div>
-                            <div class="checkbox_radio-group">
-                                <input type="checkbox" name="media-summary">
-                                <label>مع تلخيص</label>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if type.form_type == 'other' %}
-                        {{ type.form_html|safe }}
-                    {% endif %}
+                        {% endif %}
+                        {% if type.form_type == 'other' %}
+                            {{ type.form_html|safe }}
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
         {% endfor %}
         <div class="mt-3">
             <button type="submit" class="btn btn-secondary btn-lg btn-block">حفظ البيانات</button>
