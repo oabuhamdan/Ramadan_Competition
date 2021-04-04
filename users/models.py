@@ -1,13 +1,22 @@
-from enum import Enum
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.timezone import now
 
 
 # Create your models here.
+class Competition(models.Model):
+    id = models.CharField(max_length=30, primary_key=True, default='')
+    name = models.CharField(max_length=30, default='')
+    logo_path = models.FilePathField(default='')
+
+    def __str__(self):
+        return 'name: {}'.format(self.name)
+
+
 class CustomUser(User):
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='competition_uesr', null=True)
     total_points = models.FloatField(default=0.0)
+    is_admin = models.BooleanField(default=False)
 
     def __str__(self):
         return 'name: {}'.format(self.first_name)
@@ -46,6 +55,7 @@ class Sections(models.TextChoices):
 
 
 class PointsType(models.Model):
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='competition_point', null=True)
     id = models.AutoField(primary_key=True)
     section = models.CharField(max_length=32, choices=Sections.choices, default=Sections.Default)
     label = models.CharField(max_length=128, default='', blank=False, null=False)
