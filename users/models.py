@@ -73,7 +73,7 @@ class Point(models.Model):
     type = models.ForeignKey(PointsType, on_delete=models.SET_NULL, related_name='type', null=True)
     value = models.FloatField()
     details = models.CharField(max_length=256, default='')
-    record_date = models.IntegerField(default=now)
+    record_date = models.DateField(default=now)
 
     def __str__(self):
         return 'user: {}, point type: {}, value: {}, date: {}'.format(self.user, self.type.form_type, self.value,
