@@ -5,7 +5,11 @@ from .forms import *
 
 # Create your views here.
 def show_home(request):
-    return render(request, "index.html")
+    if request.user.is_authenticated:
+        user = CustomUser.objects.filter(username=request.user.username).first()
+        return render(request, "index.html", {'user': user})
+    else:
+        return render(request, "index.html")
 
 
 def register(request):

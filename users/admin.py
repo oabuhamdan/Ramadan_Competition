@@ -5,3 +5,4 @@ from django.contrib import admin
 admin.site.register(CustomUser)
 admin.site.register(Point)
 admin.site.register(PointsType)
+admin.site.register(Competition)

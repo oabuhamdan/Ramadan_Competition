@@ -1,3 +1,4 @@
+from django.template.defaulttags import register
 from users.models import CustomUser, PointsType, Point
 
 
@@ -115,9 +116,20 @@ def num(s):
 
 
 arabic_section_names = {
-    'default': '',
+    'default': 'العبادات والطاعات',
     'prayers': 'الجانب العبادي',
     'life_style': 'الجانب الحياتي',
     'educational': 'الجانب الثقافي',
     'personal': 'الجانب الشخصي'
 }
+
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+
+
+@register.filter
+def get_arabic_section_name(key):
+    return arabic_section_names.get(key)
+

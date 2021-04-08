@@ -1,4 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
-    <img src="../static/favicon.png" class="align-middle" style="max-inline-size: -webkit-fill-available;"/>
+    <div class="container text-center mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                {% if not user.is_authenticated %}
+                    <h1>المسابقة الرمضانية</h1>
+                    <h2>يرجى تسجيل الدخول للوصول إلى صفحات النقاط والنتائج</h2>
+                {% else %}
+                    <div class="row mb-4">
+                        <h1 class="w-100 text-center">مسابقة {{ user.competition.name }}</h1>
+                    <p style="font-size: larger">
+                        مسابقة تفاعلية تعقد خلال شهر رمضان المبارك بهدف استثمار هذا الشهر الفضيل فيما يرضي الله والتنافس في طاعة الله بين الأقران
+                        {وفي ذلك فليتنافس المتنافسون}
+                    </p>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <a href="/score">
+                                    <h2>تسجيل بيانات جديدة</h2>
+                                </a>
+                                <p>
+                                    من خلال هذه الصفحة تستطيع تسجيل نقاطك الجديدة بشكل يومي خلال الشهر الفضيل
+                                </p>
+                            </div>
+                            <div class="col-sm">
+                                <a href="/score">
+                                    <h2>تفاصيل نتائج المستخدم</h2>
+                                </a>
+                                <p>
+                                    من خلال هذه الصفحة تستطيع رؤية إنجازك ونقاطك خلال الشهر الفضيل
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

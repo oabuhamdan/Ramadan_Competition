@@ -7,14 +7,14 @@ from django.utils.timezone import now
 class Competition(models.Model):
     id = models.CharField(max_length=30, primary_key=True, default='')
     name = models.CharField(max_length=30, default='')
-    logo_path = models.FilePathField(default='')
 
     def __str__(self):
-        return 'name: {}'.format(self.name)
+        return self.name
 
 
 class CustomUser(User):
-    competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='competition_uesr', null=True)
+    competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, related_name='competition_user', null=True)
+    group_number = models.IntegerField(default=1)
     total_points = models.FloatField(default=0.0)
     is_admin = models.BooleanField(default=False)
 
@@ -55,7 +55,7 @@ class Sections(models.TextChoices):
 
 
 class PointsType(models.Model):
-    competition = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='competition_point', null=True)
+    competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, related_name='competition_point', null=True)
     id = models.AutoField(primary_key=True)
     section = models.CharField(max_length=32, choices=Sections.choices, default=Sections.Default)
     label = models.CharField(max_length=128, default='', blank=False, null=False)
@@ -65,15 +65,15 @@ class PointsType(models.Model):
     form_html = models.TextField(default='Default value is populated in the HTML template')
 
     def __str__(self):
-        return 'label: {}'.format(self.label)
+        return 'competition:{}, label: {}'.format('' if self.competition is None else self.competition.name, self.label)
 
 
 class Point(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='point', null=True)
-    type = models.ForeignKey(PointsType, on_delete=models.CASCADE, related_name='type', null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='point', null=True)
+    type = models.ForeignKey(PointsType, on_delete=models.SET_NULL, related_name='type', null=True)
     value = models.FloatField()
     details = models.CharField(max_length=256, default='')
-    record_date = models.DateField(default=now)
+    record_date = models.IntegerField(default=now)
 
     def __str__(self):
         return 'user: {}, point type: {}, value: {}, date: {}'.format(self.user, self.type.form_type, self.value,
