@@ -23,8 +23,12 @@
         {% csrf_token %}
         <div class="text-left">
             <label for="">اختر تاريخاً: </label>
-            <input required="required" class="date-picker" type="date" id="start" name="record-date"
-                   min="2020-10-05">
+            <select name="record-date" required="required">
+                <option value="">----</option>
+                {% for date in data.range %}
+                    <option value="{{ date }}">{{ date }} رمضان</option>
+                {% endfor %}
+            </select>
         </div>
         {% regroup data.points_types by section as points_types %}
         {% for points_type in points_types %}

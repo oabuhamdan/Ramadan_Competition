@@ -30,7 +30,7 @@
                        aria-expanded="true"
                        aria-controls="collapse{{ forloop.counter }}">
                         <h5 class="mb-0" style="float: right">
-                            نتائج يوم {{ date }} <i class="fas fa-angle-down rotate-icon"></i>
+                            نتائج يوم {{ date }} رمضان<i class="fas fa-angle-down rotate-icon"></i>
                         </h5>
                         <h6 style="float: left">
                             المجموع اليومي: {{ data.total_daily|get_item:date |floatformat:"-2" }}
@@ -48,7 +48,6 @@
                                 <th scope="col">العمل</th>
                                 <th scope="col">النقاط</th>
                                 <th scope="col">تفاصيل</th>
-                                <th scope="col">اليوم</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -57,7 +56,6 @@
                                     <td>{{ point.type.label }}</td>
                                     <td>{{ point.value|floatformat:"-2" }}</td>
                                     <td>{{ point.details }}</td>
-                                    <td>{{ point.record_date|date:"d" }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -69,22 +67,3 @@
         {% endfor %}
     </div>
 {% endblock %}
-{% comment %}
-
-
-
-
-
-{% if type.form_type == 'number' %}
-
-                    {% endif %}
-                    {% if point.type.form_type == 'check_box' %}
-                    {% endif %}
-                    {% if point.type.form_type == 'book' %}
-                    {% endif %}
-                    {% if type.form_type == 'quran' %}
-                    {% endif %}
-                    {% if point.type.form_type == 'media' %}
-                    {% endif %}
-                    {% if point.type.form_type == 'other' %}
-                    {% endif %}{% endcomment %}

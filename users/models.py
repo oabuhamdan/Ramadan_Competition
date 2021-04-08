@@ -23,17 +23,17 @@ class CustomUser(User):
 
     @staticmethod
     def get_points(username):
-        points = Point.objects.filter(user__username=username).order_by('record_date')
+        points = Point.objects.filter(user__username=username).order_by('-record_date')
         result = {}
         total_daily = {}
         for point in points:
-            date_string = point.record_date.strftime("%d-%m-%Y")
-            if date_string in result:
-                result[date_string].append(point)
-                total_daily[date_string] = total_daily[date_string] + point.value
+            date = point.record_date
+            if date in result:
+                result[date].append(point)
+                total_daily[date] = total_daily[date] + point.value
             else:
-                result[date_string] = [point]
-                total_daily[date_string] = point.value
+                result[date] = [point]
+                total_daily[date] = point.value
         return result, total_daily
 
 
@@ -73,7 +73,7 @@ class Point(models.Model):
     type = models.ForeignKey(PointsType, on_delete=models.SET_NULL, related_name='type', null=True)
     value = models.FloatField()
     details = models.CharField(max_length=256, default='')
-    record_date = models.DateField(default=now)
+    record_date = models.IntegerField(default=1)
 
     def __str__(self):
         return 'user: {}, point type: {}, value: {}, date: {}'.format(self.user, self.type.form_type, self.value,

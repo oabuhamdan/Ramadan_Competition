@@ -1,8 +1,8 @@
+from django.contrib.auth import views as v
 from django.urls import path, include
 
 from . import views
 from .forms import UserLoginForm
-from django.contrib.auth import views as v
 
 urlpatterns = [
     path("", views.show_home, name="Home"),
