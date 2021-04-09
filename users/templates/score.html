@@ -49,7 +49,7 @@
                             </button>
                             <input name="{{ type.form_type }}-{{ type.id }}-score" type="text" readonly="readonly"
                                    class="value-text-box form-control no-padding add-color text-center height-30"
-                                   value="0"/>
+                                   value="0" max="{{ type.upper_bound }}"/>
                             <button class="btn btn-secondary btn-minuse input-group-btn form-control" type="button">-
                             </button>
                         {% endif %}
@@ -179,7 +179,8 @@
         $('.btn-pluss').on('click', function () {
             var text_field = $(this).siblings('input')
             var text_val = parseInt(text_field.val())
-            if (text_val >= 50) {
+            var upper_bound = parseInt(text_field.attr('max'))
+            if (text_val >= upper_bound) {
                 this.setAttribute(disabled)
             } else
                 text_field.val(text_val + 1)

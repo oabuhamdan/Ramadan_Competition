@@ -58,6 +58,7 @@ class PointsType(models.Model):
     label = models.CharField(max_length=128, default='', blank=False, null=False)
     description = models.CharField(max_length=256, default='')
     score = models.IntegerField(default=0)
+    upper_bound = models.IntegerField(default=20)
     form_type = models.CharField(max_length=32, choices=AllowedPointTypes.choices, default=AllowedPointTypes.Number)
     form_html = models.TextField(default='Default value is populated in the HTML template')
 
