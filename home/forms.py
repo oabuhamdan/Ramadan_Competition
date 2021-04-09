@@ -13,7 +13,7 @@ class RegisterForm(UserCreationForm):
     competition = forms.ModelChoiceField(queryset=Competition.objects.all(), label="المسابقة")
 
     def clean_username(self):
-        return self.data.get('competition') + self.cleaned_data.get('username')
+        return self.data.get('competition') + '_' + self.cleaned_data.get('username')
 
     class Meta:
         model = CustomUser
@@ -32,4 +32,4 @@ class UserLoginForm(AuthenticationForm):
     }
 
     def clean_username(self):
-        return self.data.get('competition') + self.cleaned_data.get('username')
+        return self.data.get('competition') + '_' + self.cleaned_data.get('username')

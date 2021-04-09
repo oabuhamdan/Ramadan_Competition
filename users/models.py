@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.timezone import now
 
 
 # Create your models here.
@@ -14,12 +13,10 @@ class Competition(models.Model):
 
 class CustomUser(User):
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, related_name='competition_user', null=True)
-    group_number = models.IntegerField(default=1)
     total_points = models.FloatField(default=0.0)
-    is_admin = models.BooleanField(default=False)
 
     def __str__(self):
-        return 'name: {}'.format(self.first_name)
+        return 'المسابقة: {}, الاسم: {}'.format(self.competition.name, self.first_name)
 
     @staticmethod
     def get_points(username):
@@ -65,7 +62,7 @@ class PointsType(models.Model):
     form_html = models.TextField(default='Default value is populated in the HTML template')
 
     def __str__(self):
-        return 'competition:{}, label: {}'.format('' if self.competition is None else self.competition.name, self.label)
+        return 'المسابقة: {}, العنوان: {}'.format('' if self.competition is None else self.competition.name, self.label)
 
 
 class Point(models.Model):
@@ -76,5 +73,12 @@ class Point(models.Model):
     record_date = models.IntegerField(default=1)
 
     def __str__(self):
-        return 'user: {}, point type: {}, value: {}, date: {}'.format(self.user, self.type.form_type, self.value,
-                                                                      self.record_date)
+        return 'المستخدم: {}, النقطة: {}, القيمة: {}, التاريخ: {}'.format(self.user.first_name, self.type.label,
+                                                                          self.value,
+                                                                          self.record_date)
+
+
+class Group(models.Model):
+    admin = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='competition_group', null=True)
+    competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, related_name='competition_group', null=True)
+    fellows = models.ManyToManyField(CustomUser)

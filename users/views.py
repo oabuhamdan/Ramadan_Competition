@@ -1,12 +1,17 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.core import serializers
 
 from .helper import *
-from .models import CustomUser, PointsType, Point
+from .models import CustomUser, PointsType, Group
 
 
 def details(request):
     if request.user.is_authenticated:
         user = CustomUser.objects.filter(username=request.user.username).first()
+        is_group_admin = Group.objects.filter(admin=user).first() is not None
+        if is_group_admin:
+            return redirect('/fellows_details')
         points, total_daily = CustomUser.get_points(user.username)
         data = {'points': points, 'user': user, 'total_daily': total_daily}
         return render(request, "details.html", {'data': data})
@@ -25,5 +30,33 @@ def score(request):
         else:
             save_to_db(request)
             return redirect('/details')
+    else:
+        return render(request, '401.html', status=401)
+
+
+def get_requested_user_info(request):
+    username = request.GET.get('username')
+    points, total_daily = CustomUser.get_points(username)
+    data = []
+    for point in points.items():
+        data.append(
+            {
+                'day': point[0],
+                'point': serializers.serialize('json', point[1]),
+                'total': total_daily[point[0]]
+            }
+        )
+    return JsonResponse(data, safe=False)
+
+
+def fellows_details(request):
+    is_ajax = request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+    if request.user.is_authenticated:
+        if is_ajax:
+            return get_requested_user_info(request)
+        else:
+            user = CustomUser.objects.filter(username=request.user.username).first()
+            group_admin = Group.objects.filter(admin=user).first()
+            return render(request, "fellows_details.html", {'fellows': group_admin.fellows.all()})
     else:
         return render(request, '401.html', status=401)

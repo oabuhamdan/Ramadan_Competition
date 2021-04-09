@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 {% if not user.is_authenticated %}
                     <h1>المسابقة الرمضانية</h1>
-                    <h2>يرجى تسجيل الدخول للوصول إلى صفحات النقاط والنتائج</h2>
+                    <h2> يرجى <span><a href="/register">التسجيل</a></span> لحساب جديد أو <span><a href="/login">تسجيل الدخول </a></span>للوصول إلى صفحات النقاط والنتائج</h2>
                 {% else %}
                     <div class="row mb-4">
                         <h1 class="w-100 text-center">مسابقة {{ user.competition.name }}</h1>

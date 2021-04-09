@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block custom_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/users.css' %}">
+{% endblock %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+    تفاصيل نتائج المتابعين
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block page_header %}
+    <div>
+        <h2>
+            صفحة تفاصيل نتائج المتابَعين
+        </h2>
+        <hr>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="text-left">
+        <label for="">اختر شخصاً: </label>
+        <select id="fellows">
+            <option value="">----</option>
+            {% for fellow in fellows %}
+                <option value="{{ fellow.username }}">{{ fellow.first_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <table class="table table-hover table-borderless text-center">
+        <thead>
+        <tr>
+            <th scope="col">اليوم الرمضاني</th>
+            <th scope="col">مجموع النقاط</th>
+            <th scope="col">تفاصيل النقاط</th>
+        </tr>
+        </thead>
+        <tbody id="details">
+
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#fellows").change(function () {
+                let details_table = $('#details');
+                details_table.empty()
+                details_table.append('<tr><td colspan = "3">جاري تحميل بيانات المستخدم...</td></tr>');
+                var fellow_username = $("#fellows").val();
+                $.ajax({
+                    url: "/fellows_details",
+                    type: "GET",
+                    data: {'username': fellow_username},
+                    success: function (json) {
+                        details_table.empty()
+                        let days = json.length
+                        if (days === 0) {
+                            details_table.append('<tr><td colspan = "3">المستخدم لم يملأ أي بيانات بعد</td></tr>');
+                        }
+                        for (let i = 0; i < days; i++) {
+                            let row = $('<tr>');
+                            let cell1 = $('<td>').text(json[i]['day']);
+                            let cell2 = $('<td>').text(json[i]['total']);
+                            let details = JSON.parse(json[i]['point'])
+                            let details_text = details[0]['fields']['details']
+                            for (let j = 1; j < details.length; j++) {
+                                details_text += ' ، ' + details[j]['fields']['details']
+                            }
+                            let cell3 = $('<td>').text(details_text);
+                            $(row).append(cell1, cell2, cell3);
+                            details_table.append(row);
+                        }
+                    },
+                    error: function (request, status, error) {
+                        details_table.empty()
+                        details_table.append('<tr><td colspan = "3">خطأ أثناء جلب بيانات هذا المستخدم</td></tr>');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
