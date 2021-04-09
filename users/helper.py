@@ -1,4 +1,5 @@
 from django.template.defaulttags import register
+
 from users.models import CustomUser, PointsType, Point
 
 
@@ -100,7 +101,7 @@ def get_pt_details(pt_points, pt_object):
 def get_points_and_details(pt_info, items):
     pt_id = pt_info.split('-')[1]
     pt_object = PointsType.objects.filter(id=pt_id).first()
-    pt_points = num(items[pt_info + '-score'])
+    pt_points = num(items[pt_info + '-score']) * pt_object.score
     pt_details = get_pt_details(pt_points, pt_object)
     return pt_points, pt_object, pt_details
 

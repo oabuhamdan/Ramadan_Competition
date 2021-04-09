@@ -73,9 +73,10 @@ class Point(models.Model):
     record_date = models.IntegerField(default=1)
 
     def __str__(self):
-        return 'المستخدم: {}, النقطة: {}, القيمة: {}, التاريخ: {}'.format(self.user.first_name, self.type.label,
-                                                                          self.value,
-                                                                          self.record_date)
+        return 'المستخدم: {}, النقطة: {}, القيمة: {}, التاريخ: {}'.format(
+            '' if self.user is None else self.user.first_name, self.type.label,
+            self.value,
+            self.record_date)
 
 
 class Group(models.Model):
