@@ -129,9 +129,7 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = '/'
 
-SESSION_COOKIE_AGE = 60 * 60
-
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 10  # seconds * minutes * hours * days (5 days)
 
 LOGGING = {
     'version': 1,
