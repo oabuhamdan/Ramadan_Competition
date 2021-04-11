@@ -67,8 +67,8 @@ class PointsType(models.Model):
 
 
 class Point(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='point', null=True)
-    type = models.ForeignKey(PointsType, on_delete=models.SET_NULL, related_name='type', null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='point', null=True)
+    type = models.ForeignKey(PointsType, on_delete=models.CASCADE, related_name='type', null=True)
     value = models.FloatField()
     details = models.CharField(max_length=256, default='')
     record_date = models.IntegerField(default=1)
