@@ -12,8 +12,8 @@ def save_to_db(request):
         if value == 'on':
             pt_points, pt_object, pt_details = get_points_and_details(key, items)
             total = total + pt_points
-            Point.objects.create(user=user, type=pt_object, value=pt_points, details=pt_details,
-                                 record_date=record_date)
+            Point.objects.update_or_create(user=user, type=pt_object, record_date=record_date,
+                                           defaults={'value': pt_points, 'details': pt_details, })
 
     user.total_points = user.total_points + total
     user.save()
