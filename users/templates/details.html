@@ -26,7 +26,7 @@
     </div>
 {% endblock %}
 {% block content %}
-    {% if not data.is_group_admin %}
+    {% if data.is_group_admin %}
         <div>
             <h5>
                 اضغط <a href="/fellows_details"> هنا </a> لرؤية نتائج المستخدمين المتابَعين من قبلك
