@@ -22,7 +22,7 @@ def score(request):
         if request.method == "GET":
             user = request.user
             competition = CustomUser.objects.filter(username=user.username).first().competition
-            points_types = PointsType.objects.filter(competition=competition).order_by('-form_type', 'id', 'section_id')
+            points_types = PointsType.objects.filter(competition=competition).order_by('section_id', '-form_type', 'id')
             data = {'points_types': points_types, 'user': user, 'range': range(1, 31)}
             return render(request, "score.html", {'data': data})
         else:
