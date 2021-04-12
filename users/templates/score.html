@@ -35,7 +35,7 @@
         </div>
         {% regroup data.points_types by section as points_types %}
         {% for points_type in points_types %}
-            <h4>{{ points_type.grouper|get_arabic_section_name }}</h4>
+            <h4>{{ points_type.grouper.label }}</h4>
             <hr/>
             {% for type in points_type.list %}
                 <div class="input-field" id="{{ type.form_type }}">

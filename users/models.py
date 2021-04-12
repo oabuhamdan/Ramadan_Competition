@@ -43,18 +43,18 @@ class AllowedPointTypes(models.TextChoices):
     Form = 'other', 'Other'
 
 
-class Sections(models.TextChoices):
-    Default = 'default', 'Default'
-    Prayers = 'prayers', 'Prayers'
-    LifeStyle = 'life_style', 'Life Style'
-    Educational = 'educational', 'Educational'
-    Personal = 'personal', 'Personal'
+class Section(models.Model):
+    id = models.CharField(primary_key=True, max_length=32)
+    label = models.CharField(default='', max_length=32)
+
+    def __str__(self):
+        return self.label
 
 
 class PointsType(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, related_name='competition_point', null=True)
     id = models.AutoField(primary_key=True)
-    section = models.CharField(max_length=32, choices=Sections.choices, default=Sections.Default)
+    section = models.ForeignKey(Section, on_delete=models.SET_NULL, related_name='sec', null=True)
     label = models.CharField(max_length=128, default='', blank=False, null=False)
     description = models.CharField(max_length=256, default='')
     score = models.IntegerField(default=0)

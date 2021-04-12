@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
 from django.core import serializers
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 
 from .helper import *
 from .models import CustomUser, PointsType, Group
@@ -24,7 +24,7 @@ def score(request):
         if request.method == "GET":
             user = request.user
             competition = CustomUser.objects.filter(username=user.username).first().competition
-            points_types = PointsType.objects.filter(competition=competition).order_by('id', 'section')
+            points_types = PointsType.objects.filter(competition=competition).order_by('-form_type', 'id', 'section_id')
             data = {'points_types': points_types, 'user': user, 'range': range(1, 31)}
             return render(request, "score.html", {'data': data})
         else:
