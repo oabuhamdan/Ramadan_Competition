@@ -27,7 +27,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="navbar-collapse collapse show" id="navbarColor03">
+    <div class="navbar-collapse collapse" id="navbarColor03">
         {% if user.is_authenticated %}
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
@@ -69,8 +69,10 @@
         <small style="color: aliceblue">Copyright &copy; Osama AbuHamdan <span id="year"></span></small>
     </div>
 </footer>{% endcomment %}
-{#<script>#}
-{#    document.getElementById("year").innerHTML = new Date().getFullYear();#}
-{#</script>#}
+<script>
+    $(".alert-dismiss").delay(2000).fadeOut(4000, function () {
+        $(this).alert('close');
+    });
+</script>
 </body>
 </html>

@@ -1,15 +1,18 @@
 from django.shortcuts import render, redirect
 
+from users.helper import get_ramadan_daily_message
 from .forms import *
 
 
 # Create your views here.
 def show_home(request):
+    data = {'ramadan_daily_message': get_ramadan_daily_message(), }
     if request.user.is_authenticated:
         user = CustomUser.objects.filter(username=request.user.username).first()
-        return render(request, "index.html", {'user': user})
+        data['user'] = user
+        return render(request, "index.html", data)
     else:
-        return render(request, "index.html")
+        return render(request, "index.html", data)
 
 
 def register(request):

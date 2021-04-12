@@ -1,21 +1,32 @@
+from datetime import datetime
+
+from django.contrib import messages
+from django.db.models import Sum
 from django.template.defaulttags import register
 
 from users.models import CustomUser, PointsType, Point
 
 
+def populate_flash_message(request, point, is_created, record_date):
+    label = point.details
+    if is_created:
+        messages.success(request, 'لقد تم احتساب النقاط التالية: ' + label + ' / ' + record_date + ' رمضان ')
+    else:
+        messages.info(request, 'لقد تم تعديل النقاط التالية: ' + label + ' / ' + record_date + ' رمضان ')
+
+
 def save_to_db(request):
     user = CustomUser.objects.filter(username=request.user.username).first()
     items = request.POST.dict()
-    total = 0.0
     record_date = items['record-date']
     for key, value in items.items():
         if value == 'on':
             pt_points, pt_object, pt_details = get_points_and_details(key, items)
-            total = total + pt_points
-            Point.objects.update_or_create(user=user, type=pt_object, record_date=record_date,
-                                           defaults={'value': pt_points, 'details': pt_details, })
+            point, is_created = Point.objects.update_or_create(user=user, type=pt_object, record_date=record_date,
+                                                               defaults={'value': pt_points, 'details': pt_details, })
+            populate_flash_message(request, point, is_created, record_date)
 
-    user.total_points = user.total_points + total
+    user.total_points = int(Point.objects.filter(user=user).aggregate(Sum("value"))['value__sum'])
     user.save()
 
 
@@ -135,3 +146,23 @@ def get_item(dictionary, key):
 @register.filter
 def get_arabic_section_name(key):
     return arabic_section_names.get(key)
+
+
+daily_message = {
+    datetime(2021, 4, 12).date(): 'قوة الإمداد على قدر قوة الاستعداد والاستمداد، فاستعن بالله واعزم وخطط للفوز بهذا الشهر الكريم',
+    datetime(2021, 4, 13).date(): 'قوة الإمداد على قدر قوة الاستعداد والاستمداد، فاستعن بالله واعزم وخطط للفوز بهذا الشهر الكريم',
+    datetime(2021, 4, 14).date(): 'قوة الإمداد على قدر قوة الاستعداد والاستمداد، فاستعن بالله واعزم وخطط للفوز بهذا الشهر الكريم',
+    datetime(2021, 4, 15).date(): 'احتسب كل طاعة تقوم بها .. فلن تؤجر إلا على ما احتسبت، لذا عليك أن تعلم ثواب العبادات؛ لكي تحتسبها',
+    datetime(2021, 4, 16).date(): ' المحافظة على صلاة التراويح إلى أن ينصرف الإمام ليُكتب لك قيام رمضان بحول الله وقوته',
+    datetime(2021, 4, 17).date(): ' المحافظة على صلاة التراويح إلى أن ينصرف الإمام ليُكتب لك قيام رمضان بحول الله وقوته',
+    datetime(2021, 4, 18).date(): '',
+    datetime(2021, 4, 19).date(): '',
+    datetime(2021, 4, 20).date(): '',
+    datetime(2021, 4, 21).date(): '',
+    datetime(2021, 4, 22).date(): '',
+    datetime(2021, 4, 23).date(): '',
+}
+
+
+def get_ramadan_daily_message():
+    return daily_message[datetime.today().date()]

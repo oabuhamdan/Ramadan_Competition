@@ -19,6 +19,9 @@
     </div>
 {% endblock %}
 {% block content %}
+    <div class="alert alert-success alert-dismiss" role="alert">
+        لتعديل أحد النقاط المدخلة بشكل خاطئ ، اختر اليوم الرمضاني ومن ثم عدل الرقم الخاص بالنقطة.
+    </div>
     <form method="post" class="form-group">
         {% csrf_token %}
         <div class="text-left">

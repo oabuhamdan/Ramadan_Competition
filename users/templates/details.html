@@ -13,6 +13,11 @@
 {% load crispy_forms_tags %}
 
 {% block page_header %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismiss" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div>
         <h2>
             صفحة تفاصيل نتائج المستخدم {{ data.user.first_name }}
