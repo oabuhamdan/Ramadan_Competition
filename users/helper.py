@@ -7,25 +7,37 @@ from django.template.defaulttags import register
 from users.models import CustomUser, PointsType, Point
 
 
-def populate_flash_message(request, point, is_created, record_date):
-    label = point.details
-    if is_created:
-        messages.success(request, 'لقد تم احتساب النقاط التالية: ' + label + ' / ' + record_date + ' رمضان ')
-    else:
-        messages.info(request, 'لقد تم تعديل النقاط التالية: ' + label + ' / ' + record_date + ' رمضان ')
+def populate_flash_message(request, created, edited, record_date):
+    created_text = ''
+    edited_text = ''
+    for c in created:
+        created_text = created_text + '<li>{}</li>'.format(c)
+    for e in edited:
+        edited_text = edited_text + '<li>{}</li>'.format(e)
+    if created_text is not '':
+        messages.success(request,
+                         record_date + ' - رمضان / لقد تم احتساب النقاط التالية:' + '<ul>{}</ul>'.format(created_text))
+    if edited_text is not '':
+        messages.info(request,
+                      record_date + ' - رمضان / لقد تم تعديل النقاط التالية:' + '<ul>{}</ul>'.format(edited_text))
 
 
 def save_to_db(request):
     user = CustomUser.objects.filter(username=request.user.username).first()
     items = request.POST.dict()
     record_date = items['record-date']
+    created = []
+    edited = []
     for key, value in items.items():
         if value == 'on':
             pt_points, pt_object, pt_details = get_points_and_details(key, items)
             point, is_created = Point.objects.update_or_create(user=user, type=pt_object, record_date=record_date,
                                                                defaults={'value': pt_points, 'details': pt_details, })
-            populate_flash_message(request, point, is_created, record_date)
-
+            if is_created:
+                created.append(point.details)
+            else:
+                edited.append(point.details)
+    populate_flash_message(request, created, edited, record_date)
     user.total_points = int(Point.objects.filter(user=user).aggregate(Sum("value"))['value__sum'])
     user.save()
 
@@ -149,12 +161,18 @@ def get_arabic_section_name(key):
 
 
 daily_message = {
-    datetime(2021, 4, 12).date(): 'قوة الإمداد على قدر قوة الاستعداد والاستمداد، فاستعن بالله واعزم وخطط للفوز بهذا الشهر الكريم',
-    datetime(2021, 4, 13).date(): 'قوة الإمداد على قدر قوة الاستعداد والاستمداد، فاستعن بالله واعزم وخطط للفوز بهذا الشهر الكريم',
-    datetime(2021, 4, 14).date(): 'قوة الإمداد على قدر قوة الاستعداد والاستمداد، فاستعن بالله واعزم وخطط للفوز بهذا الشهر الكريم',
-    datetime(2021, 4, 15).date(): 'احتسب كل طاعة تقوم بها .. فلن تؤجر إلا على ما احتسبت، لذا عليك أن تعلم ثواب العبادات؛ لكي تحتسبها',
-    datetime(2021, 4, 16).date(): ' المحافظة على صلاة التراويح إلى أن ينصرف الإمام ليُكتب لك قيام رمضان بحول الله وقوته',
-    datetime(2021, 4, 17).date(): ' المحافظة على صلاة التراويح إلى أن ينصرف الإمام ليُكتب لك قيام رمضان بحول الله وقوته',
+    datetime(2021, 4,
+             12).date(): 'قوة الإمداد على قدر قوة الاستعداد والاستمداد، فاستعن بالله واعزم وخطط للفوز بهذا الشهر الكريم',
+    datetime(2021, 4,
+             13).date(): 'قوة الإمداد على قدر قوة الاستعداد والاستمداد، فاستعن بالله واعزم وخطط للفوز بهذا الشهر الكريم',
+    datetime(2021, 4,
+             14).date(): 'قوة الإمداد على قدر قوة الاستعداد والاستمداد، فاستعن بالله واعزم وخطط للفوز بهذا الشهر الكريم',
+    datetime(2021, 4,
+             15).date(): 'احتسب كل طاعة تقوم بها .. فلن تؤجر إلا على ما احتسبت، لذا عليك أن تعلم ثواب العبادات؛ لكي تحتسبها',
+    datetime(2021, 4,
+             16).date(): ' المحافظة على صلاة التراويح إلى أن ينصرف الإمام ليُكتب لك قيام رمضان بحول الله وقوته',
+    datetime(2021, 4,
+             17).date(): ' المحافظة على صلاة التراويح إلى أن ينصرف الإمام ليُكتب لك قيام رمضان بحول الله وقوته',
     datetime(2021, 4, 18).date(): '',
     datetime(2021, 4, 19).date(): '',
     datetime(2021, 4, 20).date(): '',

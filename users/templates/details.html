@@ -15,7 +15,7 @@
 {% block page_header %}
     {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismiss" role="alert">
-            {{ message }}
+            {{ message|safe }}
         </div>
     {% endfor %}
     <div>
