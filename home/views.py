@@ -29,4 +29,8 @@ def register(request):
 
 
 def about(request):
+    return render(request, 'about-team.html')
+
+
+def about_me(request):
     return render(request, 'about-me.html')
