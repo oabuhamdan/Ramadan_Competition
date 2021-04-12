@@ -48,9 +48,11 @@
                     <div class="less-line-height disabled_field d-flex">
                         <br>
                         {% if type.form_type == 'number' %}
+                            <input type="number" class="hidden" name="{{ type.form_type }}-{{ type.id }}-score"
+                                   value="{{ type.score }}"/>
                             <button class="btn btn-primary btn-pluss input-group-btn form-control" type="button">+
                             </button>
-                            <input name="{{ type.form_type }}-{{ type.id }}-score" type="text" readonly="readonly"
+                            <input name="{{ type.form_type }}-{{ type.id }}-count" type="text" readonly="readonly"
                                    class="value-text-box form-control no-padding add-color text-center height-30"
                                    value="0" max="{{ type.upper_bound }}"/>
                             <button class="btn btn-secondary btn-minuse input-group-btn form-control" type="button">-
@@ -180,7 +182,7 @@
         })
 
         $('.btn-pluss').on('click', function () {
-            var text_field = $(this).siblings('input')
+            var text_field = $(this).siblings('.value-text-box')
             var text_val = parseInt(text_field.val())
             var upper_bound = parseInt(text_field.attr('max'))
             if (text_val >= upper_bound) {

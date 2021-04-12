@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db.models import Sum
 from django.template.defaulttags import register
 
-from users.models import CustomUser, PointsType, Point
+from users.models import CustomUser, Point
 
 
 def populate_flash_message(request, created, edited, record_date):
@@ -30,13 +30,13 @@ def save_to_db(request):
     edited = []
     for key, value in items.items():
         if value == 'on':
-            pt_points, pt_object, pt_details = get_points_and_details(key, items)
-            point, is_created = Point.objects.update_or_create(user=user, type=pt_object, record_date=record_date,
+            pt_points, pt_id, pt_details = get_points_and_details(key, items)
+            point, is_created = Point.objects.update_or_create(user=user, type_id=pt_id, record_date=record_date,
                                                                defaults={'value': pt_points, 'details': pt_details, })
             if is_created:
-                created.append(point.details)
+                created.append(point.type.label)
             else:
-                edited.append(point.details)
+                edited.append(point.type.label)
     populate_flash_message(request, created, edited, record_date)
     user.total_points = int(Point.objects.filter(user=user).aggregate(Sum("value"))['value__sum'])
     user.save()
@@ -117,18 +117,23 @@ def get_media_info(items):
     return points, ' '.join(details)
 
 
-def get_pt_details(pt_points, pt_object):
-    return '{} نقاط من {}'.format(pt_points, pt_object.label)
+def get_pt_details(pt_info, items):
+    if pt_info.split('-')[0] == 'number':
+        count = num(items[pt_info + '-count'])
+        pt_points = num(items[pt_info + '-score'])
+        return 'عدد {} * {} نقطة لكل منها'.format(count, pt_points)
+    else:
+        return ''
 
 
 def get_points_and_details(pt_info, items):
     pt_id = pt_info.split('-')[1]
-    pt_object = PointsType.objects.filter(id=pt_id).first()
     pt_points = num(items[pt_info + '-score'])
     if pt_info.split('-')[0] == 'number':
-        pt_points *= pt_object.score
-    pt_details = get_pt_details(pt_points, pt_object)
-    return pt_points, pt_object, pt_details
+        count = num(items[pt_info + '-count'])
+        pt_points *= count
+    pt_details = get_pt_details(pt_info, items)
+    return pt_points, pt_id, pt_details
 
 
 def num(s):
@@ -173,12 +178,16 @@ daily_message = {
              16).date(): ' المحافظة على صلاة التراويح إلى أن ينصرف الإمام ليُكتب لك قيام رمضان بحول الله وقوته',
     datetime(2021, 4,
              17).date(): ' المحافظة على صلاة التراويح إلى أن ينصرف الإمام ليُكتب لك قيام رمضان بحول الله وقوته',
-    datetime(2021, 4, 18).date(): '',
-    datetime(2021, 4, 19).date(): '',
-    datetime(2021, 4, 20).date(): '',
-    datetime(2021, 4, 21).date(): '',
-    datetime(2021, 4, 22).date(): '',
-    datetime(2021, 4, 23).date(): '',
+    datetime(2021, 4, 18).date(): 'الحرص على أعمال البر .. ومن أعظمها برَّ الوالدين، فلابد أن تحرص على برهما في رمضان كي تتنزل عليك الرحمة',
+    datetime(2021, 4, 19).date(): 'البقاء بعد صلاة الفجر الى الشروق عدد ........يوم لتحصل على عدد ........حجة وعمرة كما في الحديث الصحيح',
+    datetime(2021, 4, 20).date(): 'الحرص على الدعاء عند الإفطار فهو مستجاب',
+    datetime(2021, 4, 21).date(): 'الحرص على الدعاء عند الإفطار فهو مستجاب',
+    datetime(2021, 4, 22).date(): 'المحافظة على عدد .......ركعة قيام الثلث الأخير من الليل؛ فهو وقت مبارك تُقضى فيه الحاجات وتُستجاب في الدعوات',
+    datetime(2021, 4, 23).date(): 'الصدقة بمبلغ ............ كل يوم في رمضان',
+    datetime(2021, 4, 24).date(): 'لا تجعل لسانك يفتر عن ذكر الله لحظه قدر المستطاع',
+    datetime(2021, 4, 25).date(): 'استشعر أن هذا رمضان هو آخر رمضان في حياتك وتصوم صيام مودع، و تُصلي صلاة مودع، وتجتهد فيه اجتهاداً عظيما',
+    datetime(2021, 4, 26).date(): 'الدعاء كل ليلة بأن تكون من المعتوقين من النار في هذه الليلة، وهكذا كل ليلة واستشعر في آخر ليلة أن الله يقول لك :قد اعتقتك من النار',
+    datetime(2021, 4, 27).date(): 'الدعاء في السجود والقيام للمظلومين، والمأسورين، والمكروبين، و المهمومين من أمة محمد صلى الله عليه وسلم أجمعين',
 }
 
 
