@@ -32,9 +32,9 @@
             <!-- Card header -->
             <div class="card-header" role="tab" id="heading">
                 <a class="details-collapse" data-toggle="collapse" data-parent="#accordionEx"
-                   href="#collapse{{ forloop.counter }}"
+                   href="#collapse-graph"
                    aria-expanded="true"
-                   aria-controls="collapse{{ forloop.counter }}">
+                   aria-controls="collapse-graph">
                     <h5 class="mb-0" style="float: right">
                         رسم بياني للنقاط
                     </h5>
@@ -44,8 +44,8 @@
                 </a>
             </div>
             <!-- Card body -->
-            <div id="collapse{{ forloop.counter }}" class="collapse show" role="tabpanel"
-                 aria-labelledby="heading{{ forloop.counter }}"
+            <div id="collapse-graph" class="collapse show" role="tabpanel"
+                 aria-labelledby="heading-graph"
                  data-parent="#accordionEx">
                 <div class="card-body">
                     <canvas id="myChart" width="400" height="400"></canvas>
