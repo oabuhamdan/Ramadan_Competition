@@ -16,7 +16,8 @@ class CustomUser(User):
     total_points = models.FloatField(default=0.0)
 
     def __str__(self):
-        return 'المسابقة: {}, الاسم: {}'.format(self.competition.name, self.first_name)
+        return 'المسابقة: {}, الاسم: {}'.format('' if self.competition is None else self.competition.name,
+                                                self.first_name)
 
     @staticmethod
     def get_points(username):
@@ -74,10 +75,12 @@ class Point(models.Model):
     record_date = models.IntegerField(default=1)
 
     def __str__(self):
-        return 'المستخدم: {}, النقطة: {}, القيمة: {}, التاريخ: {}'.format(
-            '' if self.user is None else self.user.first_name, self.type.label,
+        return 'المسابقة: {} ,المستخدم: {}, النقطة: {}, القيمة: {}, التاريخ: {}'.format(
+            '' if self.user is None else self.user.first_name,
+            self.type.label,
             self.value,
-            self.record_date)
+            self.record_date,
+            '' if (self.type is None or self.type.competition is None) else self.type.competition.name)
 
 
 class Group(models.Model):
