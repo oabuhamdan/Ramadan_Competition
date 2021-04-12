@@ -87,3 +87,6 @@ class Group(models.Model):
     admin = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='competition_group', null=True)
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, related_name='competition_group', null=True)
     fellows = models.ManyToManyField(CustomUser)
+
+    def __str__(self):
+        return self.admin
