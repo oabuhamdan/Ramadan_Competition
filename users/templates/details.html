@@ -26,7 +26,13 @@
     </div>
 {% endblock %}
 {% block content %}
-
+    {% if not data.is_group_admin %}
+        <div>
+            <h5>
+                اضغط <a href="/fellows_details"> هنا </a> لرؤية نتائج المستخدمين المتابَعين من قبلك
+            </h5>
+        </div>
+    {% endif %}
     <div id="accordion" class="rtl-style">
         <div class="card">
             <!-- Card header -->
@@ -62,7 +68,8 @@
                        aria-expanded="true"
                        aria-controls="collapse{{ forloop.counter }}">
                         <h5 class="mb-0" style="float: right">
-                            نتائج يوم {{ date }} رمضان<i class="fas fa-angle-down rotate-icon"></i>
+                            نتائج يوم <span class="ramadan_day"> {{ date }} رمضان </span><i
+                                class="fas fa-angle-down rotate-icon"></i>
                         </h5>
                         <h6 style="float: left">
                             المجموع اليومي:<span

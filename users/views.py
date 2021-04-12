@@ -10,10 +10,8 @@ def details(request):
     if request.user.is_authenticated:
         user = CustomUser.objects.filter(username=request.user.username).first()
         is_group_admin = Group.objects.filter(admin=user).first() is not None
-        if is_group_admin:
-            return redirect('/fellows_details')
         points, total_daily = CustomUser.get_points(user.username)
-        data = {'points': points, 'user': user, 'total_daily': total_daily}
+        data = {'points': points, 'user': user, 'total_daily': total_daily, 'is_group_admin': is_group_admin}
         return render(request, "details.html", {'data': data})
     else:
         return render(request, '401.html', status=401)
@@ -57,6 +55,9 @@ def fellows_details(request):
         else:
             user = CustomUser.objects.filter(username=request.user.username).first()
             group_admin = Group.objects.filter(admin=user).first()
-            return render(request, "fellows_details.html", {'fellows': group_admin.fellows.all()})
+            if group_admin is not None:
+                return render(request, "fellows_details.html", {'fellows': group_admin.fellows.all()})
+            else:
+                return render(request, '401.html', status=401)
     else:
         return render(request, '401.html', status=401)
