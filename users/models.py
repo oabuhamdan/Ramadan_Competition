@@ -54,7 +54,7 @@ class Section(models.Model):
 class PointsType(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, related_name='competition_point', null=True)
     id = models.AutoField(primary_key=True)
-    section = models.ForeignKey(Section, on_delete=models.SET_NULL, related_name='sec', null=True)
+    section = models.ForeignKey(Section, on_delete=models.SET_NULL, related_name='sec', null=True, default='default')
     label = models.CharField(max_length=128, default='', blank=False, null=False)
     description = models.CharField(max_length=256, default='')
     score = models.IntegerField(default=0)
