@@ -77,11 +77,11 @@ class Point(models.Model):
 
     def __str__(self):
         return 'المسابقة: {} ,المستخدم: {}, النقطة: {}, القيمة: {}, التاريخ: {}'.format(
+            '' if (self.type is None or self.type.competition is None) else self.type.competition.name,
             '' if self.user is None else self.user.first_name,
             self.type.label,
             self.value,
-            self.record_date,
-            '' if (self.type is None or self.type.competition is None) else self.type.competition.name)
+            self.record_date)
 
 
 class Group(models.Model):
