@@ -47,6 +47,7 @@ class AllowedPointTypes(models.TextChoices):
 class Section(models.Model):
     id = models.CharField(primary_key=True, max_length=32)
     label = models.CharField(default='', max_length=32)
+    priority = models.IntegerField(default=1)
 
     def __str__(self):
         return self.label
