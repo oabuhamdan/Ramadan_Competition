@@ -6,6 +6,7 @@ from django.db import models
 class Competition(models.Model):
     id = models.CharField(max_length=30, primary_key=True, default='')
     name = models.CharField(max_length=30, default='')
+    show_standings = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

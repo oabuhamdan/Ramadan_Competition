@@ -68,6 +68,8 @@ def standings(request):
     if request.user.is_authenticated:
         user = request.user
         competition = CustomUser.objects.filter(username=user.username).first().competition
+        if not competition.show_standings:
+            return render(request, '401.html', status=401)
         top_ten_users = CustomUser.objects.filter(competition=competition, total_points__gte=1) \
                             .order_by('-total_points')[:10]
         data = {'top_ten': top_ten_users, 'competition': competition}
