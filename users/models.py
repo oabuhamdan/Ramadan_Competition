@@ -89,4 +89,4 @@ class Group(models.Model):
     fellows = models.ManyToManyField(CustomUser)
 
     def __str__(self):
-        return '' if self.admin is None else self.admin
+        return '' if self.admin is None else self.admin.__str__()
