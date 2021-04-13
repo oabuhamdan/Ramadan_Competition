@@ -1,1 +1,1 @@
-web: gunicorn HomeCompetetion.wsgi
+web: bin/start-pgbouncer-stunnel gunicorn HomeCompetetion.wsgi
