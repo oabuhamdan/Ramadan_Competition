@@ -173,22 +173,20 @@
         });
 
         $('.btn-minuse').on('click', function () {
-            var text_field = $(this).siblings('input')
+            var text_field = $(this).siblings('.value-text-box')
             var text_val = parseInt(text_field.val())
-            if (text_val <= 0) {
-                this.setAttribute(disabled)
-            } else
+            if (!(text_val <= 0)) {
                 text_field.val(text_val - 1)
+            }
         })
 
         $('.btn-pluss').on('click', function () {
             var text_field = $(this).siblings('.value-text-box')
             var text_val = parseInt(text_field.val())
             var upper_bound = parseInt(text_field.attr('max'))
-            if (text_val >= upper_bound) {
-                this.setAttribute(disabled)
-            } else
+            if (!(text_val >= upper_bound)) {
                 text_field.val(text_val + 1)
+            }
         })
     </script>
 {% endblock %}
