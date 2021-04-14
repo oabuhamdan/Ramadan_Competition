@@ -20,7 +20,7 @@
 {% endblock %}
 {% block content %}
     <div class="">
-        <div class="text-right float-right"><h4>متوسط النقاط: {{ group_avg|floatformat:"-2" }}</h4></div>
+        <div class="text-right float-right"><h4>متوسط نقاط المجموعة: {{ group_avg|floatformat:"-2" }}</h4></div>
         <div class="text-left float-left">
             <label for="">اختر شخصاً: </label>
             <select id="fellows">
@@ -35,8 +35,8 @@
         <thead>
         <tr>
             <th scope="col">اليوم الرمضاني</th>
-            <th scope="col">مجموع النقاط</th>
-            <th scope="col">تفاصيل النقاط</th>
+            <th scope="col">مجموع النقاط اليومي</th>
+            <th scope="col"> تفاصيل النقاط</th>
         </tr>
         </thead>
         <tbody id="details">
@@ -73,6 +73,11 @@
                             $(row).append(cell1, cell2, cell3);
                             details_table.append(row);
                         }
+                        let sum_user = 0;
+                        $('#details tr td:nth-child(2)').each(function () {
+                            sum_user += parseInt($(this).text())
+                        })
+                        $('#details').append('<tr><td colspan="3">' + 'مجموع المستخدم الكلي: ' + sum_user + '</td></tr>');
                     },
                     error: function (request, status, error) {
                         details_table.empty()

@@ -40,7 +40,7 @@ def get_requested_user_info(request):
         data.append(
             {
                 'day': point[0],
-                'details': ['{} نقاط من {}'.format(i.value, i.type.label) for i in point[1]],
+                'details': ['{} نقاط من {}'.format(int(i.value), i.type.label) for i in point[1]],
                 'total': total_daily[point[0]]
             }
         )
