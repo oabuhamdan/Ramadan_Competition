@@ -38,7 +38,7 @@
             <h4>{{ points_type.grouper.label }}</h4>
             <hr/>
             {% for type in points_type.list %}
-                <div class="input-field" id="{{ type.form_type }}">
+                <div class="input-field {% if not type.is_active %}disabled_field{% endif %}" id="{{ type.form_type }}">
                     <div>
                         <input type="checkbox" name='{{ type.form_type }}-{{ type.id }}'
                                onclick='triggerDisableState(this)'>
