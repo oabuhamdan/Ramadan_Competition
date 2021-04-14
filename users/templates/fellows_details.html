@@ -19,14 +19,17 @@
     </div>
 {% endblock %}
 {% block content %}
-    <div class="text-left">
-        <label for="">اختر شخصاً: </label>
-        <select id="fellows">
-            <option value="">----</option>
-            {% for fellow in fellows %}
-                <option value="{{ fellow.username }}">{{ fellow.first_name }}</option>
-            {% endfor %}
-        </select>
+    <div class="">
+        <div class="text-right float-right"><h4>متوسط النقاط: {{ group_avg|floatformat:"-2" }}</h4></div>
+        <div class="text-left float-left">
+            <label for="">اختر شخصاً: </label>
+            <select id="fellows">
+                <option value="">----</option>
+                {% for fellow in fellows %}
+                    <option value="{{ fellow.username }}">{{ fellow.first_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
     <table class="table table-hover table-borderless text-center">
         <thead>
@@ -61,10 +64,10 @@
                             let row = $('<tr>');
                             let cell1 = $('<td>').text(json[i]['day']);
                             let cell2 = $('<td>').text(json[i]['total']);
-                            let details = JSON.parse(json[i]['point'])
-                            let details_text = details[0]['fields']['details']
+                            let details = json[i]['details']
+                            let details_text = details[0]
                             for (let j = 1; j < details.length; j++) {
-                                details_text += ' ، ' + details[j]['fields']['details']
+                                details_text += ' ، ' + details[j]
                             }
                             let cell3 = $('<td>').text(details_text);
                             $(row).append(cell1, cell2, cell3);

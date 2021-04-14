@@ -1,4 +1,3 @@
-from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -41,7 +40,7 @@ def get_requested_user_info(request):
         data.append(
             {
                 'day': point[0],
-                'point': serializers.serialize('json', point[1]),
+                'details': ['{} نقاط من {}'.format(i.value, i.type.label) for i in point[1]],
                 'total': total_daily[point[0]]
             }
         )
@@ -57,7 +56,10 @@ def fellows_details(request):
             user = CustomUser.objects.filter(username=request.user.username).first()
             group_admin = Group.objects.filter(admin=user).first()
             if group_admin is not None:
-                return render(request, "fellows_details.html", {'fellows': group_admin.fellows.all()})
+                users = group_admin.fellows.all()
+                group_sum = sum([i.total_points for i in users])
+                return render(request, "fellows_details.html",
+                              {'fellows': group_admin.fellows.all(), 'group_avg': group_sum / len(users)})
             else:
                 return render(request, '401.html', status=401)
     else:
