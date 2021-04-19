@@ -108,22 +108,23 @@
     </div>
     <script>
         items_to_view = Math.ceil(window.screen.width / 100);
-        d = []
-        $('.total_day').each(function () {
-            var t = $(this).text();
-            d.push(t)
+        days_labels = []
+        $('.details-collapse').find('.ramadan_day').slice(0, items_to_view).each(function () {
+            let t = $(this).text();
+            days_labels.push(t)
         })
-        d.reverse()
-        labels = []
-        for (let i = Math.max(1, d.length - items_to_view - 1); i <= d.length; i++) {
-            labels.push("رمضان - " + i)
-        }
-        d = d.slice(-items_to_view);
+        days_values = []
+        $('.details-collapse').find('.total_day').slice(0, items_to_view).each(function () {
+            let t = $(this).text();
+            days_values.push(t)
+        })
+        days_values.reverse()
+        days_labels.reverse()
         const data = {
-            labels: labels,
+            labels: days_labels,
             datasets: [{
                 label: 'النقاط',
-                data: d,
+                data: days_values,
                 fill: false,
                 borderColor: 'rgb(0,191,255)',
             }]
