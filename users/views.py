@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from .helper import *
-from .models import CustomUser, PointsType, Group
+from .models import *
 
 
 def details(request):
@@ -73,7 +73,7 @@ def standings(request):
         if not competition.show_standings:
             return render(request, '401.html', status=401)
         top_ten_users = CustomUser.objects.filter(competition=competition, total_points__gte=1) \
-                            .order_by('-total_points')[:10]
+                            .order_by('-total_points')[:20]
         data = {'top_ten': top_ten_users, 'competition': competition}
         return render(request, "standings.html", {'data': data})
     else:
