@@ -69,7 +69,14 @@
                             for (let j = 1; j < details.length; j++) {
                                 details_text += ' ، ' + details[j]
                             }
-                            let cell3 = $('<td>').text(details_text);
+
+                            details_text = ' <a data-toggle="collapse" href="#collapse' + i +
+                                '" aria-expanded="false" aria-controls="collapse' + i +
+                                '">إظهار التفاصيل</a>' +
+                                '<div class="collapse" id="collapse' + i +
+                                '">' + details_text +'</div>';
+
+                            let cell3 = $('<td>').append(details_text);
                             $(row).append(cell1, cell2, cell3);
                             details_table.append(row);
                         }
