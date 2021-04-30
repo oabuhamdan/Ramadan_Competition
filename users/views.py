@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 
 from .helper import *
@@ -78,3 +78,59 @@ def standings(request):
         return render(request, "standings.html", {'data': data})
     else:
         return render(request, '401.html', status=401)
+
+
+def delete_points(request):
+    if request.user.is_staff:
+        if request.method == 'GET':
+            competitions = Competition.objects.all()
+            return render(request, 'delete_points.html', {'competitions': competitions})
+        elif request.method == 'POST':
+            delete_selected_points(request)
+    else:
+        return render(request, '401.html', status=401)
+
+
+def get_competition_people(request):
+    if request.user.is_staff:
+        selected_competition = request.GET.get('selected_comp')
+        comp_people = CustomUser.objects.filter(competition_id=selected_competition)
+        data = []
+        for person in comp_people:
+            data.append(
+                {
+                    'username': person.username,
+                    'name': person.first_name
+                }
+            )
+        return JsonResponse(data, safe=False)
+    else:
+        return HttpResponse(status=401)
+
+
+def get_user_points(request):
+    if request.user.is_staff:
+        selected_user_name = request.GET.get('selected_user')
+        selected_day = request.GET.get('selected_day')
+        user_points = Point.objects.filter(user__username=selected_user_name, record_date=selected_day)
+        data = []
+        for point in user_points:
+            data.append(
+                {
+                    'id': point.id,
+                    'label': point.type.label,
+                    'details': point.details,
+                    'value': point.value,
+                }
+            )
+        return JsonResponse(data, safe=False)
+    else:
+        return HttpResponse(status=401)
+
+
+def delete_selected_points(request):
+    if request.user.is_staff:
+        ids = [int(token) for token in request.POST.dict().keys() if token.isdigit()]
+        for id in ids:
+            Point.objects.filter(id=id).delete()
+    return render(request, "delete_points.html")

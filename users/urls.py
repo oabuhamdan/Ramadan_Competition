@@ -7,4 +7,7 @@ urlpatterns = [
     path('score/', views.score),
     path('fellows_details/', views.fellows_details),
     path('standings/', views.standings),
+    path('delete_points/', views.delete_points),
+    path('get_competition_people/', views.get_competition_people),
+    path('get_user_points/', views.get_user_points),
 ]
