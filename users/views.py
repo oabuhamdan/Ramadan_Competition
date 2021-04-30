@@ -86,7 +86,7 @@ def delete_points(request):
             competitions = Competition.objects.all()
             return render(request, 'delete_points.html', {'competitions': competitions})
         elif request.method == 'POST':
-            delete_selected_points(request)
+            return delete_selected_points(request)
     else:
         return render(request, '401.html', status=401)
 
