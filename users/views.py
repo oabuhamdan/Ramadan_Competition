@@ -82,11 +82,8 @@ def standings(request):
 
 def delete_points(request):
     if request.user.is_staff:
-        if request.method == 'GET':
-            competitions = Competition.objects.all()
-            return render(request, 'delete_points.html', {'competitions': competitions})
-        elif request.method == 'POST':
-            return delete_selected_points(request)
+        competitions = Competition.objects.all()
+        return render(request, 'delete_points.html', {'competitions': competitions})
     else:
         return render(request, '401.html', status=401)
 
@@ -130,7 +127,9 @@ def get_user_points(request):
 
 def delete_selected_points(request):
     if request.user.is_staff:
-        ids = [int(token) for token in request.POST.dict().keys() if token.isdigit()]
+        ids = request.POST.dict()['selected_points'].split(',')[1:]
         for id in ids:
             Point.objects.filter(id=id).delete()
-    return render(request, "delete_points.html")
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=401)

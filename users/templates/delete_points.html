@@ -21,8 +21,8 @@
     </div>
 {% endblock %}
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
+    {% csrf_token %}
+    <form method="post" id="delete">
         <div id="selections">
             <select id="competitions">
                 <option value="-">المسابقة</option>
@@ -45,9 +45,7 @@
 
             </tbody>
         </table>
-        <div class="mt-3">
-            <button type="submit" class="btn btn-secondary btn-lg btn-block">حفظ البيانات</button>
-        </div>
+        <div id="button"></div>
     </form>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -115,6 +113,9 @@
                         $(row).append(cell1, cell2, cell3, cell4);
                         details_table.append(row);
                     }
+                    if (!$('.btn-secondary').length) {
+                        $('#button').append('<div class="mt-3"><button type="submit" class="btn btn-secondary btn-block">حفظ البيانات</button></div>');
+                    }
                 },
                 error: function (request, status, error) {
                     details_table.empty()
@@ -122,5 +123,29 @@
                 }
             });
         }
+
+        $("#delete").submit(function (event) {
+            let selected_points = '';
+            $('input[type=checkbox]:checked').each(function () {
+                selected_points += ',' + $(this).attr('name');
+            });
+            let csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val()
+            $.ajax({
+                type: "POST",
+                url: "/delete_selected_points/",
+                data: {'selected_points': selected_points, 'csrfmiddlewaretoken': csrfmiddlewaretoken},
+                success: function () {
+                    let details_table = $('#details');
+                    details_table.empty()
+                    $("#days option:selected").prop("selected", false);
+                    $("#days option:first").attr('selected', 'selected');
+                    alert('تم الحذف بنجاح')
+                },
+                error: function (request, status, error) {
+                    alert('فشل الحذف')
+                }
+            });
+            return false;
+        });
     </script>
 {% endblock %}
