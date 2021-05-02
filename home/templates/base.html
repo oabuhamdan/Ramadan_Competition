@@ -28,7 +28,7 @@
     </button>
 
     <div class="navbar-collapse collapse" id="navbarColor03">
-        {% if user.is_authenticated or user.is_staff%}
+        {% if request.user.is_authenticated %}
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
                 </li>
@@ -47,7 +47,7 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">حول</a>
+                    <a class="nav-link" href="/about-me">حول</a>
                 </li>
             </ul>
             <div class="form-inline mr-auto">
