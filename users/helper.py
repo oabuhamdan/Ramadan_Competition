@@ -4,22 +4,28 @@ from django.contrib import messages
 from django.db.models import Sum
 from django.template.defaulttags import register
 
-from users.models import CustomUser, Point
+from users.models import CustomUser, Point, PointsType
 
 
-def populate_flash_message(request, created, edited, record_date):
+def populate_flash_message(request, created, edited, error,record_date):
     created_text = ''
     edited_text = ''
+    error_text = ''
     for c in created:
         created_text = created_text + '<li>{}</li>'.format(c)
     for e in edited:
         edited_text = edited_text + '<li>{}</li>'.format(e)
+    for er in error:
+        error_text = error_text + '<li>{}</li>'.format(er)
     if created_text is not '':
         messages.success(request,
                          record_date + ' - رمضان / لقد تم احتساب النقاط التالية:' + '<ul>{}</ul>'.format(created_text))
     if edited_text is not '':
         messages.info(request,
                       record_date + ' - رمضان / لقد تم تعديل النقاط التالية:' + '<ul>{}</ul>'.format(edited_text))
+    if error_text is not '':
+        messages.warning(request,
+                         record_date + ' - رمضان / لم يتم احتساب النقاط التالية:' + '<ul>{}</ul>'.format(error_text))
 
 
 def save_to_db(request):
@@ -28,16 +34,22 @@ def save_to_db(request):
     record_date = items['record-date']
     created = []
     edited = []
+    error = []
     for key, value in items.items():
         if value == 'on':
             pt_points, pt_id, pt_details = get_points_and_details(key, items)
-            point, is_created = Point.objects.update_or_create(user=user, type_id=pt_id, record_date=record_date,
-                                                               defaults={'value': pt_points, 'details': pt_details, })
-            if is_created:
-                created.append(point.type.label)
+            pt_type = PointsType.objects.filter(id=pt_id).first()
+            if pt_type.is_active and pt_points <= pt_type.upper_bound * pt_type.score:
+                point, is_created = Point.objects.update_or_create(user=user, type_id=pt_id, record_date=record_date,
+                                                                   defaults={'value': pt_points,
+                                                                             'details': pt_details, })
+                if is_created:
+                    created.append(point.type.label)
+                else:
+                    edited.append(point.type.label)
             else:
-                edited.append(point.type.label)
-    populate_flash_message(request, created, edited, record_date)
+                error.append(pt_type.label)
+    populate_flash_message(request, created, edited, error, record_date)
     user.total_points = int(Point.objects.filter(user=user).aggregate(Sum("value"))['value__sum'])
     user.save()
 
