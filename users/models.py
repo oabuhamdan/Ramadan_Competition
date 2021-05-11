@@ -56,6 +56,7 @@ class Section(models.Model):
 
 class PointsType(models.Model):
     is_active = models.BooleanField(default=True)
+    is_shown = models.BooleanField(default=True)
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, related_name='competition_point', null=True)
     id = models.AutoField(primary_key=True)
     section = models.ForeignKey(Section, on_delete=models.SET_NULL, related_name='sec', null=True, default='default')
