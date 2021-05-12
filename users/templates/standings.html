@@ -18,7 +18,9 @@
         <tr>
             <th scope="col">الترتيب</th>
             <th scope="col">الاسم</th>
-{#            <th scope="col">النقاط</th>#}
+            {% if data.competition.archive_mode %}
+                <th scope="col">النقاط</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -26,7 +28,9 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ person.first_name }}</td>
-{#                <td>{{ person.total_points }}</td>#}
+                {% if data.competition.archive_mode %}
+                    <td>{{ person.total_points }}</td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

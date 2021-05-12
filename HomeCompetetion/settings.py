@@ -127,6 +127,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 LOGIN_REDIRECT_URL = '/'
 
+LOGIN_URL = '/login'
+
 LOGOUT_REDIRECT_URL = '/'
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 35  # seconds * minutes * hours * days (35 days)
