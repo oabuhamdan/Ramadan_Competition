@@ -21,6 +21,8 @@ def score(request):
         if request.method == "GET":
             user = request.user
             competition = CustomUser.objects.filter(username=user.username).first().competition
+            if competition.archive_mode:
+                return render(request, 'archive_mode.html', status=200)
             points_types = PointsType.objects.filter(competition=competition, is_shown=True).order_by(
                 'section__priority',
                 '-form_type', 'id')
