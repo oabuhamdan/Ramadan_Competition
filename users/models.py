@@ -16,6 +16,7 @@ class Competition(models.Model):
 class CustomUser(User):
     competition = models.ForeignKey(Competition, on_delete=models.SET_NULL, related_name='competition_user', null=True)
     total_points = models.FloatField(default=0.0)
+    can_score_on_archive_mode = models.BooleanField(default=False)
 
     def __str__(self):
         return 'المسابقة: {}, الاسم: {}'.format('' if self.competition is None else self.competition.name,

@@ -18,9 +18,9 @@ def details(request):
 @login_required
 def score(request):
     if request.method == "GET":
-        user = request.user
-        competition = CustomUser.objects.filter(username=user.username).first().competition
-        if competition.archive_mode:
+        user = CustomUser.objects.filter(username=request.user.username).first()
+        competition = user.competition
+        if competition.archive_mode and not user.can_score_on_archive_mode:
             return render(request, 'archive_mode.html', status=200)
         points_types = PointsType.objects.filter(competition=competition, is_shown=True).order_by(
             'section__priority',
