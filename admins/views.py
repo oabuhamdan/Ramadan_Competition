@@ -36,12 +36,14 @@ def delete_points(request):
 def get_competition_people(request):
     selected_competition = request.GET.get('selected_comp')
     comp_people = CustomUser.objects.filter(competition_id=selected_competition)
+    archive_people = UserArchive.objects.filter(competition_id=selected_competition)
     data = []
     for person in comp_people:
         data.append(
             {
                 'username': person.username,
-                'name': person.first_name
+                'name': person.first_name,
+                'archive_date': archive_people.filter(username=person.username).first().archive_date,
             }
         )
     return JsonResponse(data, safe=False)

@@ -67,7 +67,7 @@
                         details_table.empty()
                         for (let i = 0; i < json.length; i++) {
                             let cell1 = $('<td>').text(json[i]['name']);
-                            let cell2 = $('<td>').text('');
+                            let cell2 = $('<td>').text(json[i]['archive_date']);
                             let cell3 = $('<td>').append('<input type="checkbox" name="' + json[i]['username'] + '\">');
                             let row = $('<tr>');
                             $(row).append(cell1, cell2, cell3);
