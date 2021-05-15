@@ -1,0 +1,47 @@
+{% extends 'admins/base.html' %}
+{% block page_header %}
+    <div>
+        <h2>
+            ملف Excel بمعلومات المسابقة
+        </h2>
+        <hr>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="list-group">
+        <table class="table table-hover table-borderless text-center">
+            <thead>
+            <tr>
+                <th scope="col">المسابقة</th>
+                <th scope="col">تاريخ إنشاء الملف</th>
+                <th scope="col">تنزيل الملف</th>
+            </tr>
+            </thead>
+            <tbody id="details">
+            {% for comp in competitions %}
+                <tr>
+                    <td>{{ comp.name }}</td>
+                    <td class="excel_date">{{ comp.excel_file_date }}</td>
+                    <td>
+                        <button class="btn btn-secondary" role="button" onclick="generate_excel('{{ comp.comp_id }}')">
+                            اضغط لتنزيل الملف
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function generate_excel(comp_id) {
+            $.ajax({
+                url: "/admins/generate_excel",
+                type: "GET",
+                data: {'comp_id': comp_id},
+                success: function () {
+                    alert("نجحت العملية")
+                },
+            });
+        }
+    </script>
+{% endblock %}

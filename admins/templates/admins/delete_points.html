@@ -57,7 +57,7 @@
                 details_table.append('<tr><td colspan = "4">جاري تحميل بيانات المستخدمين...</td></tr>');
                 var selected_comp = $("#competitions").val();
                 $.ajax({
-                    url: "/get_competition_people",
+                    url: "/admins/get_competition_people",
                     type: "GET",
                     data: {'selected_comp': selected_comp},
                     success: function (json) {
@@ -99,7 +99,7 @@
             let selected_user = $("#users").val();
             let selected_day = $("#days").val();
             $.ajax({
-                url: "/get_user_points",
+                url: "/admins/get_user_points",
                 type: "GET",
                 data: {'selected_user': selected_user, 'selected_day': selected_day},
                 success: function (json) {
@@ -132,7 +132,7 @@
             let csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val()
             $.ajax({
                 type: "POST",
-                url: "/delete_selected_points/",
+                url: "/admins/delete_selected_points/",
                 data: {'selected_points': selected_points, 'csrfmiddlewaretoken': csrfmiddlewaretoken},
                 success: function () {
                     let details_table = $('#details');

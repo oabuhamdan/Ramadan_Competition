@@ -1,0 +1,100 @@
+{% extends 'admins/base.html' %}
+{% block page_header %}
+    <div>
+        <h2>
+            أرشفة نقاط مستخدمي المسابقة
+        </h2>
+        <hr>
+    </div>
+{% endblock %}
+{% block content %}
+    <form method="post" id="archive">
+        {% csrf_token %}
+        <div id="selections">
+            <select id="competitions">
+                <option value="-">المسابقة</option>
+                {% for competition in competitions %}
+                    <option value="{{ competition.comp_id }}">{{ competition.name }}</option>
+                {% endfor %}
+            </select>
+            <span class="float-left">
+                <input type="checkbox" id="checkAll">
+                <label>حدد الجميع</label>
+            </span>
+        </div>
+        <table class="table table-hover table-borderless text-center">
+            <thead>
+            <tr>
+                <th scope="col">المستخدم</th>
+                <th scope="col">تاريخ أحدث أرشيف</th>
+                <th scope="col">إنشاء أرشيف جديد</th>
+            </tr>
+            </thead>
+            <tbody id="details">
+            </tbody>
+        </table>
+        <div class="mt-3">
+            <button type="submit" onclick="create_new_archive()" class="btn btn-primary btn-block">إنشاء أرشيف جديد
+            </button>
+        </div>
+    </form>
+    <script>
+        $(document).ready(function () {
+            $("#checkAll").click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
+
+            $("#competitions").change(function () {
+                let details_table = $('#details');
+                details_table.empty()
+                details_table.append('<tr><td colspan = "3">جاري تحميل بيانات المستخدمين...</td></tr>');
+                var selected_comp = $("#competitions").val();
+                $.ajax({
+                    url: "/admins/get_competition_people",
+                    type: "GET",
+                    data: {'selected_comp': selected_comp},
+                    success: function (json) {
+                        details_table.empty()
+                        for (let i = 0; i < json.length; i++) {
+                            let cell1 = $('<td>').text(json[i]['name']);
+                            let cell2 = $('<td>').text('');
+                            let cell3 = $('<td>').append('<input type="checkbox" name="' + json[i]['username'] + '\">');
+                            let row = $('<tr>');
+                            $(row).append(cell1, cell2, cell3);
+                            details_table.append(row);
+                        }
+                    },
+                    error: function (request, status, error) {
+                        details_table.empty()
+                        details_table.append('<tr><td colspan = "4">خطأ أثناء جلب بيانات المستخدمين</td></tr>');
+                    }
+                });
+            });
+
+        });
+
+        function create_new_archive() {
+            let selected_users = '';
+            $('input[type=checkbox]:checked').each(function () {
+                selected_users += ',' + $(this).attr('name');
+            });
+            let csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val()
+            $.ajax({
+                type: "POST",
+                url: "/admins/archive_users_points/",
+                data: {
+                    'selected_users': selected_users,
+                    'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                },
+                success: function () {
+                    $('#details').empty();
+                    alert('تم بنجاح')
+                },
+                error: function () {
+                    alert('فشل')
+                }
+            });
+            return false;
+        }
+    </script>
+{% endblock %}
