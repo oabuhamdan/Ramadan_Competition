@@ -94,7 +94,10 @@ def archive_points(usr_id):
 def archive_points_action(request):
     ids = request.POST.dict()['selected_users'].split(',')[1:]
     for usr_id in ids:
-        archive_points(usr_id)
+        try:
+            archive_points(usr_id)
+        except Exception as e:
+            print(e)
     return HttpResponse(status=200)
 
 
