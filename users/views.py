@@ -14,7 +14,9 @@ def is_competition_archived(request):
         return request.session['competition_archive_mode']
     else:
         user = CustomUser.objects.filter(username=request.user.username).first()
-        return user.competition.archive_mode if user and user.competition else False
+        archive_mode = user.competition.archive_mode if user and user.competition else False
+        request.session['competition_archive_mode'] = archive_mode
+        return archive_mode
 
 
 @login_required
