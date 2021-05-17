@@ -1,1 +1,1 @@
-web: bin/start-pgbouncer-stunnel newrelic-admin run-program gunicorn HomeCompetetion.wsgi
+web: gunicorn HomeCompetetion.wsgi
