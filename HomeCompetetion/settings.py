@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'HomeCompetetion.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'da25oqtt0fs6tj',
-        'HOST': 'ec2-34-247-232-111.eu-west-1.compute.amazonaws.com',
+        'NAME': 'dakkea04hu9dc6',
+        'HOST': 'ec2-54-217-195-234.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
-        'USER': 'u6e680r7aepg1l',
-        'PASSWORD': 'p805d16e29a21d4a95c2f94a91e3cdfac272578d4edb05ac14fe85cc1b0649567',
+        'USER': 'rpwhyxyorrxlue',
+        'PASSWORD': '54765af54482ea58a3995ab9bde384c5053b82eb27cc4b90f0064ebfeb4d9dd0',
     }
 }
 
