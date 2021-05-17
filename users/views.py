@@ -14,7 +14,7 @@ def is_competition_archived(request):
         return request.session['competition_archive_mode']
     else:
         user = CustomUser.objects.filter(username=request.user.username).first()
-        return user.competition.archive_mode
+        return user.competition.archive_mode if user and user.competition else False
 
 
 @login_required
@@ -52,7 +52,7 @@ def get_requested_user_info(request):
     if is_competition_archived(request):
         user_data = UserArchiveData
     points_data = user_data.get_user_points_grouped_by_date_as_json(username=username)
-    return JsonResponse(json.loads(points_data), safe=False)
+    return JsonResponse(json.loads(points_data))
 
 
 @login_required

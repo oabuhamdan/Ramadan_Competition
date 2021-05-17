@@ -10,12 +10,13 @@ class UserArchiveData:
     @staticmethod
     def get_user_points_grouped_by_date_as_json(username):
         user = UserArchive.objects.filter(username=username).first()
-        data_json = json.loads(user.json_data)
+        data_json = user.json_data
         return data_json
 
     @staticmethod
     def get_user_points_by_date(username, date):
         user_points = UserArchiveData.get_user_points_grouped_by_date_as_json(username)
+        user_points = json.loads(user_points)
         return user_points[date]
 
 
