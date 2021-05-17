@@ -58,28 +58,28 @@
                 </div>
             </div>
         </div>
-        {% for date, points in data.points.items %}
+        {% for date, points_data in data.points_data.items %}
             <!-- Accordion card -->
             <div class="card">
                 <!-- Card header -->
                 <div class="card-header" role="tab" id="heading">
                     <a class="details-collapse" data-toggle="collapse" data-parent="#accordionEx"
-                       href="#collapse{{ forloop.counter }}"
+                       href="#collapse-{{ date }}"
                        aria-expanded="true"
-                       aria-controls="collapse{{ forloop.counter }}">
+                       aria-controls="collapse-{{ date }}">
                         <h5 class="mb-0" style="float: right">
                             نتائج يوم <span class="ramadan_day"> {{ date }} رمضان </span><i
                                 class="fas fa-angle-down rotate-icon"></i>
                         </h5>
                         <h6 style="float: left">
                             المجموع اليومي:<span
-                                class="total_day">{{ data.total_daily|get_item:date |floatformat:"-2" }}</span>
+                                class="total_day">{{ points_data.total_day |floatformat:"-2" }}</span>
                         </h6>
                     </a>
                 </div>
                 <!-- Card body -->
-                <div id="collapse{{ forloop.counter }}" class="collapse show" role="tabpanel"
-                     aria-labelledby="heading{{ forloop.counter }}"
+                <div id="collapse-{{ date }}" class="collapse show" role="tabpanel"
+                     aria-labelledby="heading-{{ date }}"
                      data-parent="#accordionEx">
                     <div class="card-body">
                         <table class="table table-hover table-borderless text-center">
@@ -91,9 +91,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for point in points %}
+                            {% for point in points_data.points %}
                                 <tr>
-                                    <td>{{ point.type.label }}</td>
+                                    <td>{{ point.label }}</td>
                                     <td>{{ point.value|floatformat:"-2" }}</td>
                                     <td>{{ point.details }}</td>
                                 </tr>

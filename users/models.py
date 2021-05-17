@@ -22,21 +22,6 @@ class CustomUser(User):
         return 'المسابقة: {}, الاسم: {}'.format('' if self.competition is None else self.competition.name,
                                                 self.first_name)
 
-    @staticmethod
-    def get_points(username):
-        points = Point.objects.filter(user__username=username).order_by('-record_date')
-        result = {}
-        total_daily = {}
-        for point in points:
-            date = point.record_date
-            if date in result:
-                result[date].append(point)
-                total_daily[date] = total_daily[date] + point.value
-            else:
-                result[date] = [point]
-                total_daily[date] = point.value
-        return result, total_daily
-
 
 class AllowedPointTypes(models.TextChoices):
     Number = 'number', 'Number'

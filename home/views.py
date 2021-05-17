@@ -9,6 +9,7 @@ def show_home(request):
     data = {'ramadan_daily_message': get_ramadan_daily_message(), }
     if request.user.is_authenticated:
         user = CustomUser.objects.filter(username=request.user.username).first()
+        request.session['competition_archive_mode'] = user.competition.archive_mode
         data['user'] = user
         return render(request, "index.html", data)
     else:

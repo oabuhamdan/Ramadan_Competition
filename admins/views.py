@@ -1,16 +1,14 @@
 import datetime
-import json
 from io import BytesIO
 
 import pandas as pd
 from django.contrib.admin.views.decorators import staff_member_required
-from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 from admins.models import *
-# Create your views here.
 from users.models import Point
+from users.user_data import UserData
 
 
 @staff_member_required
@@ -53,23 +51,8 @@ def get_competition_people(request):
 def get_user_points(request):
     selected_user_name = request.GET.get('selected_user')
     selected_day = request.GET.get('selected_day')
-    data = get_point_by_user_and_date(selected_day, selected_user_name)
+    data = UserData.get_user_points_by_date(selected_day, selected_user_name)
     return JsonResponse(data, safe=False)
-
-
-def get_point_by_user_and_date(selected_day, selected_user_name):
-    user_points = Point.objects.filter(user__username=selected_user_name, record_date=selected_day)
-    data = []
-    for point in user_points:
-        data.append(
-            {
-                'id': point.id,
-                'label': point.type.label,
-                'details': point.details,
-                'value': point.value,
-            }
-        )
-    return data
 
 
 def render_template_for_competition(request, html_template):
@@ -78,14 +61,8 @@ def render_template_for_competition(request, html_template):
 
 
 def archive_points(usr_id):
-    points = {}
     user = CustomUser.objects.filter(username=usr_id).first()
-    for day in range(1, 31):
-        user_points_by_date = get_point_by_user_and_date(day, usr_id)
-        if len(user_points_by_date) > 0:
-            points[day] = user_points_by_date
-
-    data = json.dumps(points, cls=DjangoJSONEncoder)
+    data = UserData.get_user_points_grouped_by_date_as_json(user.username)
     UserArchive.objects.update_or_create(username=usr_id, name=user.first_name, competition_id=user.competition.id,
                                          defaults={'archive_date': datetime.datetime.now,
                                                    'json_data': data,
