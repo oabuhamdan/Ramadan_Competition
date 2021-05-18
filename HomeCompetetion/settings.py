@@ -76,16 +76,7 @@ WSGI_APPLICATION = 'HomeCompetetion.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dakkea04hu9dc6',
-        'HOST': 'ec2-54-217-195-234.eu-west-1.compute.amazonaws.com',
-        'PORT': '5432',
-        'USER': 'rpwhyxyorrxlue',
-        'PASSWORD': '54765af54482ea58a3995ab9bde384c5053b82eb27cc4b90f0064ebfeb4d9dd0',
-    }
-}
+DATABASES = {}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
