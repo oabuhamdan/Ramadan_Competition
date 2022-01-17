@@ -78,13 +78,16 @@ WSGI_APPLICATION = 'HomeCompetetion.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-DATABASES = {}
-DATABASE_URL = os.environ['DATABASE_URL']
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-# Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dfkh9ocdov3pbj',
+        'USER': 'txxewaukabfcxe',
+        'PASSWORD': 'e4d7e36921098676f8f4c6aacf84f441244b51db36a5a30f4c137f21da7eb37b',
+        'HOST': 'ec2-18-234-17-166.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
+}
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
